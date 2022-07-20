@@ -15,4 +15,4 @@ vanillaplusjs dev --watch
 
 ## Contributing
 
-This project accepts poll requests.
+This project accepts pull requests.
