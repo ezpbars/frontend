@@ -38,7 +38,7 @@ update_website_code() {
     pip install -r requirements.txt
     vanillaplusjs build --no-symlinks
     deactivate
-    rsync -avu --delete out/ /var/www
+    rsync -avu --delete out/www/ /var/www
 }
 
 install_basic_dependencies
