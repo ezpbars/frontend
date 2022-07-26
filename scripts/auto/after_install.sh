@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+install_basic_dependencies() {
+    if ! rsync --help
+    then
+        yum install -y rsync
+    fi
+}
+
 install_nginx() {
     cp scripts/nginx.repo /etc/yum.repos.d/nginx.repo
     sudo -u ec2-user mkdir -p /home/ec2-user/logs
@@ -34,6 +41,7 @@ update_website_code() {
     rsync -avu --delete out/ /var/www
 }
 
+install_basic_dependencies
 install_nginx_if_necessary
 update_nginx_config
 update_website_code
