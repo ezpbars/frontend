@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+screen -S webapp -X quit
 if ! nginx -s quit
 then
     echo "Failed to quit nginx, attempting to kill by process name"
