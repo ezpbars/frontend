@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 install_basic_dependencies() {
-    if ! rsync --help
+    if ! rsync --help > /dev/null 2>&1
     then
         yum install -y rsync
     fi
