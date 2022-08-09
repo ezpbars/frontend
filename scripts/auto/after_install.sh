@@ -34,6 +34,7 @@ update_website_code() {
         python3 -m venv venv
     fi
     . venv/bin/activate
+    . /home/ec2-user/config.sh
     python -m pip install -U pip
     pip install -r requirements.txt
     vanillaplusjs build --no-symlinks
