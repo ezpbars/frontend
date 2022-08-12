@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--[TEMPLATE: ["/standard.html"]]-->
+    <link rel="stylesheet" href="/css/docs.css">
+    <title>ezpbars auth</title>
+</head>
+
+<body>
+    <div class="content">
+        <div class="container">
+            <h1>ezpbars Auth</h1>
+            <p>Most endpoints for the <a href="/api/1/docs">ezpbars REST api</a> require authentication.
+                There are two forms of authentication - that available using the <a
+                    href="https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-reference.html">auth
+                    subdomain</a>
+                for human initiated logins, and server to server <a
+                    href="/api/1/docs#/default/create_user_token_api_1_users_tokens__post">user tokens</a>.</p>
+            <h2>Server to Server Authentication</h2>
+            <p>Endpoints that are intended for direct api consumption rather than via the website accepta user token in
+                the
+                authorization header
+                for example,
+            <pre>authorization: bearer ep_ut_xxxxx</pre>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

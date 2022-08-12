@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "host": null,
+    "host": "ezpbars.com",
     "images": {
         "formats": {
             "jpeg": {

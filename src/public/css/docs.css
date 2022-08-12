@@ -1,0 +1,89 @@
+/* #region standardizing */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ebebeb;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* #endregion */
+/* #region layout */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    padding-left: 24px;
+    padding-right: 24px;
+    width: 816px;
+}
+
+@media screen and (min-width: 992px) {
+    .content {
+        margin: 80px 0;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .content {
+        margin: 40px 0;
+    }
+}
+
+/* #endregion */
+/* #region styles */
+h1 {
+    font-family: "Bitter-Bold";
+    font-weight: bold;
+    font-style: normal;
+    font-size: 44px;
+    color: #333;
+}
+
+h2 {
+    font-family: "Bitter-Bold";
+    font-weight: bold;
+    font-style: normal;
+    font-size: 33px;
+    color: #333;
+}
+
+p {
+    font-family: "OpenSans";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 21px;
+    color: #555;
+    line-height: 150%;
+}
+
+p a {
+    font-family: "OpenSans";
+    font-weight: 500;
+    font-style: normal;
+    font-size: 21px;
+    color: #1a1adb;
+    text-decoration: none;
+    line-height: 150%;
+}
+
+p a:visited {
+    font-family: "OpenSans";
+    font-weight: 500;
+    font-style: normal;
+    font-size: 21px;
+    color: #7f1054;
+    text-decoration: none;
+    line-height: 150%;
+}
+
+pre {
+    font-size: 21px;
+}
+
+/* #endregion */
