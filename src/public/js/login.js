@@ -7,6 +7,7 @@
  */
 import { AuthHelper } from "/js/auth_helper.js";
 import { AUTH_CLIENT_ID, AUTH_DOMAIN, LOGIN_URL } from "/js/constants.js";
+import { apiUrl } from "/js/fetch_helper.js";
 
 function onDocumentLoaded() {
     insertLoginUrls();
@@ -25,9 +26,9 @@ function insertLoginUrls() {
 
 /**
  * if there are tokens in the url fragment stores them in the auth
- * helper
+ * helper; if a new token is detected, calls POST /api/1/users/
  */
-function handleNewToken() {
+async function handleNewToken() {
     const fragment = window.location.hash;
     if (fragment === "") {
         return;
@@ -41,6 +42,7 @@ function handleNewToken() {
     }
     if (args.has("id_token")) {
         AuthHelper.store(args.get("id_token"), args.get("access_token"), args.get("refresh_token"));
+        await fetch(apiUrl("/api/1/users/"), AuthHelper.auth({ method: "POST" }));
         window.location.replace(window.location.href.split("#", 2)[0]);
     }
 }
@@ -55,7 +57,7 @@ async function handleExpiringTokens() {
         return;
     }
     const tokens = AuthHelper.retrieve();
-    const claimsRaw = btoa(tokens.id.split(".")[1]);
+    const claimsRaw = atob(tokens.id.split(".")[1]);
     const claimsUnverified = JSON.parse(claimsRaw);
     const expiresAt = new Date(claimsUnverified.exp * 1000);
     const now = new Date();

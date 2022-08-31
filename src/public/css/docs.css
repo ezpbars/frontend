@@ -38,7 +38,7 @@ body {
 /* #endregion */
 /* #region styles */
 h1 {
-    font-family: "Bitter-Bold";
+    font-family: "Bitter";
     font-weight: bold;
     font-style: normal;
     font-size: 44px;
@@ -46,7 +46,7 @@ h1 {
 }
 
 h2 {
-    font-family: "Bitter-Bold";
+    font-family: "Bitter";
     font-weight: bold;
     font-style: normal;
     font-size: 33px;

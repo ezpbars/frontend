@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--[TEMPLATE: ["/standard.html"]]-->
+    <title>ezpbars-dev login</title>
+  </head>
+
+  <body>
+    <h1>Hello World</h1>
+    <form id="login-form">
+      <input type="text" name="sub" placeholder="sub" />
+      <button type="submit">Login</button>
+    </form>
+    <script type="module">
+      import { apiUrl } from "/js/fetch_helper.js";
+      function onDocumentLoaded() {
+        const form = document.getElementById("login-form");
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const subInput = form.querySelector('[name="sub"]');
+          const sub = subInput.value;
+          if (sub === "") {
+            return;
+          }
+          const response = await fetch(
+            apiUrl("/api/1/test/dev_login") + "?" + new URLSearchParams({ sub }).toString(),
+            {
+              method: "POST",
+            }
+          );
+          if (!response.ok) {
+            throw response;
+          }
+          const data = await response.json();
+          const idToken = data.id;
+          const fragment = new URLSearchParams({ id_token: idToken }).toString();
+          window.location.href = "/#" + fragment;
+        });
+      }
+      onDocumentLoaded();
+    </script>
+  </body>
+</html>
