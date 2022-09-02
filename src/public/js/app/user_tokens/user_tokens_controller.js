@@ -1,4 +1,5 @@
 import { PageableItems } from "/js/app/resources/pageable_items.js";
+import { CreateUserTokensFormController } from "/js/app/user_tokens/create_user_tokens_form_controller.js";
 import { UserTokenReader } from "/js/app/user_tokens/user_token_reader.js";
 import { UserTokenView } from "/js/app/user_tokens/user_token_view.js";
 import { simpleArrayListener } from "/js/lib/replica_listener.js";
@@ -36,6 +37,17 @@ export class UserTokensController {
                 this.itemsView.items.items.splice(index, 1)[0].userToken.detach();
             }
         }));
+        this.reader.hasNextPage.addListenerAndInvoke((hasNext) => {
+            this.itemsView.hasMore.value = hasNext;
+        });
+        /**
+         * the form to create new items
+         * @type {CreateUserTokensFormController}
+         * @readonly
+         */
+        this.createUserTokensForm = new CreateUserTokensFormController((userToken) => {
+            this.reader.items.push(userToken);
+        });
         this.render();
     }
     /**
@@ -56,5 +68,6 @@ export class UserTokensController {
      */
     render() {
         this.element.appendChild(this.itemsView.element);
+        this.element.appendChild(this.createUserTokensForm.element);
     }
 }

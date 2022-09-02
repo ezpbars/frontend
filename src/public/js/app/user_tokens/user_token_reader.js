@@ -35,7 +35,7 @@ export class UserTokenReader {
          * @type {Observable.<number>}
          * @readonly
          */
-        this.limit = new Observable(10);
+        this.limit = new Observable(3);
         /**
          * the actual list of items
          * @type {ArrayListenerOf.<import("/js/app/user_tokens/user_token.js").UserToken>}
@@ -112,7 +112,7 @@ export class UserTokenReader {
         for (let item of data.items) {
             newItems.push(parseUserToken(item));
         }
-        this.items.splice(this.items.get().length - 1, 0, ...newItems);
+        this.items.splice(this.items.get().length, 0, ...newItems);
     }
     /**
      * loads the first page matching the current sort and filters

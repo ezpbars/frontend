@@ -78,7 +78,7 @@ export class ResourceSection {
                     return resourcesValue;
                 })());
                 return section;
-            })(), { visible: this.formatter(this.data.get(this.key)) === null });
+            })(), { visible: this.formatter(this.data.get(this.key)) !== null });
             return collapse.element;
         })());
     }
