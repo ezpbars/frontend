@@ -1,5 +1,6 @@
 import { PageableItems } from "/js/app/resources/pageable_items.js";
 import { CreateUserTokensFormController } from "/js/app/user_tokens/create_user_tokens_form_controller.js";
+import { UserTokensFilterController } from "/js/app/user_tokens/user_tokens_filter_controller.js";
 import { UserTokenReader } from "/js/app/user_tokens/user_token_reader.js";
 import { UserTokenView } from "/js/app/user_tokens/user_token_view.js";
 import { simpleArrayListener } from "/js/lib/replica_listener.js";
@@ -48,6 +49,18 @@ export class UserTokensController {
         this.createUserTokensForm = new CreateUserTokensFormController((userToken) => {
             this.reader.items.push(userToken);
         });
+        /**
+         * the view for changing the filters and sort
+         * @type {UserTokensFilterController}
+         * @readonly
+         */
+        this.filterController = new UserTokensFilterController(this.reader.filters.value, this.reader.sort.value);
+        this.filterController.filters.addListener((filters) => {
+            this.reader.filters.value = filters;
+        });
+        this.filterController.sort.addListener((sort) => {
+            this.reader.sort.value = sort;
+        });
         this.render();
     }
     /**
@@ -69,5 +82,6 @@ export class UserTokensController {
     render() {
         this.element.appendChild(this.itemsView.element);
         this.element.appendChild(this.createUserTokensForm.element);
+        this.element.appendChild(this.filterController.element);
     }
 }

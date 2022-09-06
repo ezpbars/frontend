@@ -274,25 +274,15 @@ export function simpleArrayListener(splicer, kwargs) {
             }
         },
         splice: (start, deleteCount, ...items) => {
-            if (splicer.replace) {
-                for (let i = 0; i < deleteCount && i < items.length; i++) {
+            if (splicer.replace && deleteCount > 0 && items.length > 0) {
+                const numToReplace = Math.min(deleteCount, items.length);
+                for (let i = 0; i < numToReplace; i++) {
                     splicer.replace(start + i, items[i]);
                 }
-
-                if (deleteCount >= items.length) {
-                    for (let i = items.length; i < deleteCount; i++) {
-                        splicer.remove(start + i);
-                        currentLength--;
-                    }
-                } else {
-                    for (let i = deleteCount; i < items.length; i++) {
-                        splicer.insert(start + i, items[i]);
-                        currentLength++;
-                    }
-                }
+                return this.splice(start + numToReplace, deleteCount - numToReplace, ...items.splice(numToReplace, items.length - numToReplace));
             } else {
                 for (let i = 0; i < deleteCount; i++) {
-                    splicer.remove(start + i);
+                    splicer.remove(start);
                     currentLength--;
                 }
 
