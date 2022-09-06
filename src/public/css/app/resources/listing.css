@@ -1,0 +1,71 @@
+/* #region layout */
+/* #region listing */
+.resource-listing {
+    display: flex;
+    flex-direction: row;
+    gap: 80px;
+}
+@media screen and (max-width: 991px) {
+    .resource-listing {
+        gap: 40px;
+    }
+}
+.resource-listing-left {
+    display: flex;
+    flex-direction: column;
+    gap: 160px;
+}
+@media screen and (max-width: 991px) {
+    .resource-listing-left {
+        gap: 80px;
+    }
+}
+.resource-listing-items .resources-items:empty::before {
+    content: "Nothing to Show";
+}
+/* #endregion */
+/* #region items */
+.resources-items {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+@media screen and (max-width: 991px) {
+    .resources-items {
+        gap: 20px;
+    }
+}
+.resources-pageable-items-load-more {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+@media screen and (max-width: 991px) {
+    .resources-pageable-items-load-more {
+        margin-top: 10px;
+        padding: 5px;
+    }
+}
+/* #endregion */
+/* #region section */
+.resources-section-inner {
+    display: flex;
+    flex-flow: row wrap;
+    gap: .25em;
+}
+.resources-key::after {
+    content: ":";
+}
+/* #endregion */
+/* #endregion */
+/* #region styles */
+/* #region section */
+.resources-key {
+    /*! PREPROCESSOR: import .text-label-1 FROM /css/typography.css */
+}
+.resources-value {
+    /*! PREPROCESSOR: import .text-body-1 FROM /css/typography.css */
+}
+/* #endregion */
+/* #endregion */

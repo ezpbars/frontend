@@ -30,6 +30,7 @@ export class CreateUserTokensFormController {
      */
     render() {
         this.element.textContent = "";
+        this.element.classList.add("elevation-medium");
         this.element.appendChild((() => {
             const form = document.createElement("form");
             form.classList.add("user-tokens-create-form");

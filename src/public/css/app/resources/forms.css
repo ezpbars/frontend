@@ -1,0 +1,37 @@
+/* #region form-group */
+.resources-form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 40px;
+}
+@media screen and (max-width: 991px) {
+    .resources-form-group {
+        margin-bottom: 20px;
+    }
+}
+.resources-form-group:has(input[type="checkbox"]) {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+.resources-form-group label {
+    /*! PREPROCESSOR: import .text-label-1 FROM /css/typography.css */
+}
+.resources-form-group input, .resources-form-group select {
+    /*! PREPROCESSOR: import .text-body-1 FROM /css/typography.css */
+}
+/* #endregion */
+/* #region buttons */
+button[type="submit"] {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+@media screen and (max-width: 991px) {
+    button[type="submit"] {
+        margin-top: 10px;
+        padding: 5px;
+    }
+}
+/* #endregion */

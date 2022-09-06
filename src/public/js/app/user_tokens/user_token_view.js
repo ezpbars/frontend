@@ -37,7 +37,7 @@ export class UserTokenView {
      * @private
      */
     render() {
-        this.element.classList.add("user-tokens-user-token-view");
+        this.element.classList.add("user-tokens-user-token-view", "elevation-medium");
         this.element.appendChild((() => {
             /** @type {ReplicaListener & ListenerOf.<string, "token">} */
             const data = this.userToken;

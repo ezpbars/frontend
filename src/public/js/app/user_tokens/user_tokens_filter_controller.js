@@ -33,7 +33,7 @@ export class UserTokensFilterController {
         this.render();
     }
     render() {
-        this.element.classList.add("user-tokens-filters-controller");
+        this.element.classList.add("user-tokens-filters-controller", "elevation-medium");
         this.element.appendChild(new FormGroup((() => {
             const input = document.createElement("input");
             input.type = "checkbox";

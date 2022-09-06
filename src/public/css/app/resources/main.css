@@ -1,0 +1,12 @@
+/* #region elevations */
+.elevation-medium {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+@media screen and (max-width: 991px) {
+    .elevation-medium {
+        padding: 10px;
+    }
+}
+/* #endregion */

@@ -3,7 +3,7 @@ import { Observable } from "/js/lib/observable.js";
 /**
  * a generic class responsible for showing a list of a resource as well as the
  * ability to create delete filter and sort items where applicable, this also
- * allows updating the resources]
+ * allows updating the resources
  */
 export class Listing {
     /**

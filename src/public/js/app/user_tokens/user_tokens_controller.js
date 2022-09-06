@@ -1,3 +1,4 @@
+import { Listing } from "/js/app/resources/listing.js";
 import { PageableItems } from "/js/app/resources/pageable_items.js";
 import { CreateUserTokensFormController } from "/js/app/user_tokens/create_user_tokens_form_controller.js";
 import { UserTokensFilterController } from "/js/app/user_tokens/user_tokens_filter_controller.js";
@@ -80,8 +81,6 @@ export class UserTokensController {
      * @private
      */
     render() {
-        this.element.appendChild(this.itemsView.element);
-        this.element.appendChild(this.createUserTokensForm.element);
-        this.element.appendChild(this.filterController.element);
+        this.element.appendChild(new Listing(this.itemsView, this.createUserTokensForm, this.filterController).element);
     }
 }
