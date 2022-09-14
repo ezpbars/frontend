@@ -57,6 +57,14 @@
 .resources-key::after {
     content: ":";
 }
+/* #region controls */
+.resources-controls {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-end;
+    gap: 5px;
+}
+/* #endregion */
 /* #endregion */
 /* #endregion */
 /* #region styles */

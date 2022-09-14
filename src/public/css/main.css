@@ -1,0 +1,14 @@
+:root {
+    --col-primary: #333;
+    --col-primary-dark: #000;
+    --col-primary-light: #666;
+    --col-disabled: #CCC;
+    --icon-size-large: 1.5rem;
+    --icon-size-medium: 1rem;
+    --icon-size-small: 0.75rem;
+}
+/* #region buttons */
+/*! PREPROCESSOR: icon delete primary all-colors all-sizes */
+/*! PREPROCESSOR: icon edit primary all-colors all-sizes */
+/*! PREPROCESSOR: icon check primary all-colors all-sizes */
+/* #endregion */
