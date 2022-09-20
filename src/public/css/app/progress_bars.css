@@ -1,0 +1,8 @@
+.progress-bar-view .progress-bar-step-view {
+    margin-top: 20px;
+}
+@media screen and (max-width: 991px) {
+    .progress-bar-view .progress-bar-step-view {
+        margin-top: 10px;
+    }
+}

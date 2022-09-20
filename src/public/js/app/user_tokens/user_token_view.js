@@ -1,4 +1,3 @@
-import { Collapse } from "/js/app/resources/collapse.js";
 import { Controls } from "/js/app/resources/controls.js";
 import { ResourceSection } from "/js/app/resources/resource_section.js";
 import { AuthHelper } from "/js/auth_helper.js";
