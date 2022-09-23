@@ -10,3 +10,15 @@
     }
 }
 /* #endregion */
+/* #region back-buttons */
+.back-button {
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 40px;
+}
+@media screen and (max-width: 991px) {
+    .back-button {
+        margin-bottom: 20px;
+    }
+}
+/* #endregion */

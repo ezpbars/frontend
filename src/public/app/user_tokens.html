@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!--[TEMPLATE: ["/app.html"]]-->
-    <link rel="stylesheet" href="/css/app/user_tokens.css" />
-    <title>ezpbars user tokens</title>
-  </head>
+    <head>
+        <!--[TEMPLATE: ["/app.html"]]-->
+        <link rel="stylesheet" href="/css/app/user_tokens.css" />
+        <title>ezpbars user tokens</title>
+    </head>
 
-  <body>
-    <div class="content">
-      <div class="container">
-        <h1>user tokens</h1>
-        <a href="/">back</a>
-        <div id="user-tokens"></div>
-      </div>
-    </div>
-    <script type="module" src="/js/login.js"></script>
-    <script type="module">
-      import { UserTokensController } from "/js/app/user_tokens/user_tokens_controller.js";
-      document.getElementById("user-tokens").appendChild(new UserTokensController().element);
-    </script>
-  </body>
+    <body>
+        <div class="content">
+            <div class="container">
+                <h1>user tokens</h1>
+                <a href="/" class="back-button">back</a>
+                <div id="user-tokens"></div>
+            </div>
+        </div>
+        <script type="module" src="/js/login.js"></script>
+        <script type="module">
+            import { UserTokensController } from "/js/app/user_tokens/user_tokens_controller.js";
+            document.getElementById("user-tokens").appendChild(new UserTokensController().element);
+        </script>
+    </body>
 </html>
