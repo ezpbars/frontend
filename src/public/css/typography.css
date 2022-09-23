@@ -215,6 +215,11 @@
     font-weight: 400;
     font-size: 16px;
 }
+.text-body-2 {
+    font-family: "OpenSans";
+    font-weight: 400;
+    font-size: 14px;
+}
 .text-label-1 {
     font-family: "OpenSans";
     font-weight: 600;

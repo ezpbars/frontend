@@ -2,7 +2,7 @@ import { implementReplicaListener, ListenerOf, ReplicaListener } from "/js/lib/r
 
 /**
  * progress bar step
- * @typedef {ReplicaListener & ListenerOf.<string, "userSub"> & ListenerOf.<string, "progressBarName"> & ListenerOf.<string, "uid"> & ListenerOf.<string, "name"> & ListenerOf.<number, "position"> & ListenerOf.<number, "iterated"> & ListenerOf.<"percentile" | "harmonicMean" | "geometricMean" | "arithmeticMean", "oneOffTechnique"> & ListenerOf.<number, "oneOffPercentile"> & ListenerOf.<"bestFit.linear" | "percentile" | "harmonicMean" | "geometricMean" | "arithmeticMean", "iteratedTechnique"> & ListenerOf.<number, "iteratedPercentile"> & ListenerOf.<Date, "createdAt">} ProgressBarStep
+ * @typedef {ReplicaListener & ListenerOf.<string, "userSub"> & ListenerOf.<string, "progressBarName"> & ListenerOf.<string, "uid"> & ListenerOf.<string, "name"> & ListenerOf.<number, "position"> & ListenerOf.<boolean, "iterated"> & ListenerOf.<"percentile" | "harmonicMean" | "geometricMean" | "arithmeticMean", "oneOffTechnique"> & ListenerOf.<number, "oneOffPercentile"> & ListenerOf.<"bestFit.linear" | "percentile" | "harmonicMean" | "geometricMean" | "arithmeticMean", "iteratedTechnique"> & ListenerOf.<number, "iteratedPercentile"> & ListenerOf.<Date, "createdAt">} ProgressBarStep
  */
 
 export const ITERATED_TECHNIQUE_API_TO_NATIVE = {
@@ -16,7 +16,7 @@ export const ONE_OFF_TECHNIQUE_API_TO_NATIVE = {
     "percentile": "percentile",
     "harmonic_mean": "harmonicMean",
     "geometric_mean": "geometricMean",
-    "arithmetic_mean": "arithemticMean"
+    "arithmetic_mean": "arithmeticMean"
 };
 export const ITERATED_TECHNIQUE_NATIVE_TO_API = {
     "percentile": "percentile",

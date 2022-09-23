@@ -8,11 +8,11 @@ import { Observable } from "/js/lib/observable.js";
 export class CreateProgressBarFormController {
     /**
      * 
-     * @param {function(import("/js/app/progress_bars/progress_bar.js").ProgressBar) : any} onCreated the function to call when the form id submitted
+     * @param {function(import("/js/app/progress_bars/progress_bar.js").ProgressBar) : any} onCreated the function to call when the form is submitted
      */
     constructor(onCreated) {
         /**
-         * the element this function is atteched to
+         * the element this function is attached to
          * @type {Element}
          * @readonly
          */

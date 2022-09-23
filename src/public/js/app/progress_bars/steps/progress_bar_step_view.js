@@ -1,3 +1,4 @@
+import { ITERATED_TECHNIQUE_NATIVE_TO_API, ONE_OFF_TECHNIQUE_NATIVE_TO_API } from "/js/app/progress_bars/steps/progress_bar_step.js";
 import { Collapse } from "/js/app/resources/collapse.js";
 import { Controls } from "/js/app/resources/controls.js";
 import { ResourceSection } from "/js/app/resources/resource_section.js";
@@ -56,11 +57,48 @@ export class ProgressBarStepView {
         this.onDelete = onDelete;
         this.render();
     }
+    /**
+     * handles deleting the progress bar step and then calling the callback
+     * @private
+     */
     async _onDelete() {
-        // TODO: when endpoint is ready
+        const response = await fetch(
+            apiUrl("/api/1/progress_bars/steps/?" + new URLSearchParams({ pbar_name: this.progressBarStep.get("progressBarName"), step_name: this.progressBarStep.get("name") }).toString()),
+            AuthHelper.auth({ method: "DELETE" })
+        );
+        if (!response.ok) {
+            throw response;
+        }
+        if (this.onDelete !== null) {
+            this.onDelete();
+        }
     }
+    /**
+     * handles switching to/from editing mode
+     * @private
+     */
     async _onEdit() {
-        // TODO when endpoint is ready
+        if (!this.editing.value) {
+            this.editing.value = true;
+            return;
+        }
+        const response = await fetch(
+            apiUrl("/api/1/progress_bars/steps/?" + new URLSearchParams({ pbar_name: this.progressBarStep.get("progressBarName"), step_name: this.progressBarStep.get("name") }).toString()),
+            AuthHelper.auth({
+                method: "PUT",
+                headers: { "content-type": "application/json; charset=UTF-8" },
+                body: JSON.stringify({
+                    one_off_technique: ONE_OFF_TECHNIQUE_NATIVE_TO_API[this.progressBarStep.get("oneOffTechnique")],
+                    one_off_percentile: this.progressBarStep.get("oneOffPercentile"),
+                    iterated_technique: ITERATED_TECHNIQUE_NATIVE_TO_API[this.progressBarStep.get("iteratedTechnique")],
+                    iterated_percentile: this.progressBarStep.get("iteratedPercentile")
+                })
+            })
+        );
+        if (!response.ok) {
+            throw response;
+        }
+        this.editing.value = false;
     }
     render() {
         this.element.classList.add("progress-bar-step-view", "elevation-medium");
@@ -98,7 +136,7 @@ export class ProgressBarStepView {
         })());
         this.element.appendChild((() => {
             const collapse = new Collapse((() => {
-                /** @type {ReplicaListener & ListenerOf.<number, "iterated">} */
+                /** @type {ReplicaListener & ListenerOf.<boolean, "iterated">} */
                 const data = this.progressBarStep;
                 return (new ResourceSection(data, "iterated", { formatter: (iterated) => iterated.toString() })).element;
             })(), { visible: this.progressBarStep.get("name") !== "default" });
@@ -141,7 +179,12 @@ export class ProgressBarStepView {
                     },
                     formatter: (technique) => ONE_OFF_TECHNIQUE_NATIVE_TO_PRETTY[technique]
                 })).element;
-            })(), { visible: this.progressBarStep.get("name") === "default" || this.progressBarStep.get("iterated") === 0 });
+            })(), { visible: this.progressBarStep.get("name") === "default" || !this.progressBarStep.get("iterated") });
+            const updateVisibility = () => {
+                collapse.visible.value = this.progressBarStep.get("name") === "default" || !this.progressBarStep.get("iterated");
+            };
+            this.progressBarStep.addListener("name", updateVisibility);
+            this.progressBarStep.addListener("iterated", updateVisibility);
             return collapse.element;
         })());
         this.element.appendChild((() => {
@@ -168,7 +211,13 @@ export class ProgressBarStepView {
                     },
                     formatter: (oneOffPercentile) => oneOffPercentile.toString()
                 })).element;
-            })(), { visible: this.progressBarStep.get("name") === "default" || (this.progressBarStep.get("iterated") === 0 && this.progressBarStep.get("oneOffTechnique") === "percentile") });
+            })(), { visible: this.progressBarStep.get("name") === "default" || (!this.progressBarStep.get("iterated") && this.progressBarStep.get("oneOffTechnique") === "percentile") });
+            const updateVisibility = () => {
+                collapse.visible.value = this.progressBarStep.get("name") === "default" || (!this.progressBarStep.get("iterated") && this.progressBarStep.get("oneOffTechnique") === "percentile");
+            };
+            this.progressBarStep.addListener("name", updateVisibility);
+            this.progressBarStep.addListener("iterated", updateVisibility);
+            this.progressBarStep.addListener("oneOffTechnique", updateVisibility);
             return collapse.element;
         })());
         this.element.appendChild((() => {
@@ -205,7 +254,12 @@ export class ProgressBarStepView {
                     },
                     formatter: (technique) => ITERATED_TECHNIQUE_NATIVE_TO_PRETTY[technique]
                 })).element;
-            })(), { visible: this.progressBarStep.get("name") === "default" || this.progressBarStep.get("iterated") === 1 });
+            })(), { visible: this.progressBarStep.get("name") === "default" || this.progressBarStep.get("iterated") });
+            const updateVisibility = () => {
+                collapse.visible.value = this.progressBarStep.get("name") === "default" || this.progressBarStep.get("iterated");
+            };
+            this.progressBarStep.addListener("name", updateVisibility);
+            this.progressBarStep.addListener("iterated", updateVisibility);
             return collapse.element;
         })());
         this.element.appendChild((() => {
@@ -232,7 +286,13 @@ export class ProgressBarStepView {
                     },
                     formatter: (iteratedPercentile) => iteratedPercentile.toString()
                 })).element;
-            })(), { visible: this.progressBarStep.get("name") === "default" || (this.progressBarStep.get("iterated") === 1 && this.progressBarStep.get("iteratedTechnique") === "percentile") });
+            })(), { visible: this.progressBarStep.get("name") === "default" || (this.progressBarStep.get("iterated") && this.progressBarStep.get("iteratedTechnique") === "percentile") });
+            const updateVisibility = () => {
+                collapse.visible.value = this.progressBarStep.get("name") === "default" || (this.progressBarStep.get("iterated") && this.progressBarStep.get("iteratedTechnique") === "percentile");
+            };
+            this.progressBarStep.addListener("name", updateVisibility);
+            this.progressBarStep.addListener("iterated", updateVisibility);
+            this.progressBarStep.addListener("iteratedTechnique", updateVisibility);
             return collapse.element;
         })());
         this.element.appendChild((() => {

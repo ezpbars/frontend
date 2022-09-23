@@ -1,7 +1,7 @@
 import { ProgressBarFilterController } from "/js/app/progress_bars/progress_bar_filter_controller.js";
 import { ProgressBarReader } from "/js/app/progress_bars/progress_bar_reader.js";
 import { ProgressBarView } from "/js/app/progress_bars/progress_bar_view.js";
-import { CreateProgressBarFormController } from "/js/app/progress_bars/steps/create_progress_bar_form_controller.js";
+import { CreateProgressBarFormController } from "./create_progress_bar_form_controller.js";
 import { Listing } from "/js/app/resources/listing.js";
 import { PageableItems } from "/js/app/resources/pageable_items.js";
 import { simpleArrayListener } from "/js/lib/replica_listener.js";
@@ -15,7 +15,7 @@ export class ProgressBarsController {
          */
         this.element = document.createElement("div");
         /**
-         * the object responsible for fetching progress bars form the api
+         * the object responsible for fetching progress bars from the api
          * @type {ProgressBarReader}
          * @readonly
          */

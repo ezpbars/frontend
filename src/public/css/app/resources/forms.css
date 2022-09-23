@@ -20,6 +20,9 @@
 .resources-form-group input, .resources-form-group select {
     /*! PREPROCESSOR: import .text-body-1 FROM /css/typography.css */
 }
+.resources-form-help, .resources-form-error {
+    /*! PREPROCESSOR: import .text-body-2 FROM /css/typography.css */
+}
 /* #endregion */
 /* #region buttons */
 button[type="submit"] {
@@ -33,5 +36,32 @@ button[type="submit"] {
         margin-top: 10px;
         padding: 5px;
     }
+}
+/* #endregion */
+/* #region search-controller */
+.resources-search-controller {
+    position: relative;
+}
+.resources-search-controller input {
+    width: 100%;
+}
+.resources-search-controller-options-list {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    position: absolute;
+}
+.resources-search-controller-option {
+    appearance: none;
+    box-shadow: none;
+    background-color: var(--col-background);
+    border-radius: 0;
+    border: none;
+    text-align: left;
+    margin: 0;
+    padding: 10px;
+}
+.resources-search-controller-option:hover {
+    background-color: #d3d3d3;
 }
 /* #endregion */

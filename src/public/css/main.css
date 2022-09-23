@@ -3,9 +3,13 @@
     --col-primary-dark: #000;
     --col-primary-light: #666;
     --col-disabled: #CCC;
+    --col-background: #f7f7f7;
     --icon-size-large: 1.5rem;
     --icon-size-medium: 1rem;
     --icon-size-small: 0.75rem;
+}
+* {
+    box-sizing: border-box;
 }
 /* #region buttons */
 /*! PREPROCESSOR: icon delete primary all-colors all-sizes */

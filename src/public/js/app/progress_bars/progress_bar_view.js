@@ -54,7 +54,7 @@ export class ProgressBarView {
         this.render();
     }
     /**
-     * hanldes deleting the progress bar and then calling the callback
+     * handles deleting the progress bar and then calling the callback
      * @private
      */
     async _onDelete() {
@@ -202,6 +202,16 @@ export class ProgressBarView {
                 },
                 formatter: (technique) => SAMPLING_TECHNIQUE_NATIVE_TO_PRETTY[technique]
             })).element;
+        })());
+        this.element.appendChild((() => {
+            /** @type {ReplicaListener & ListenerOf.<Date, "createdAt">} */
+            const data = this.progressBar;
+            return (new ResourceSection(data, "createdAt", { formatter: (createdAt) => createdAt.toLocaleString() })).element;
+        })());
+        this.element.appendChild((() => {
+            /** @type {ReplicaListener & ListenerOf.<number, "version">} */
+            const data = this.progressBar;
+            return (new ResourceSection(data, "version", { formatter: (version) => version.toString() })).element;
         })());
         this.element.appendChild(this.defaultStepConfigView.element);
     }
