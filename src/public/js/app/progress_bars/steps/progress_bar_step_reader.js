@@ -81,11 +81,11 @@ export class ProgressBarStepReader {
     }
     /**
      * updates the items to match the result from the given filter and sort so long as
-     * the request counter matched the id throughout the entire process
+     * the request counter matches the id throughout the entire process
      * @param {import("/js/app/progress_bars/steps/progress_bar_step_filters.js").ProgressBarStepFilters} filter
      *   the filter to use
      * @param {import("/js/app/progress_bars/steps/progress_bar_step_sort.js").ProgressBarStepSort} sort
-     *   the sort ot use
+     *   the sort to use
      * @param {number} limit the maximum number of results to load
      * @param {number} id the value of the request counter for this request
      * @returns {Promise.<Array.<import("/js/app/progress_bars/steps/progress_bar_step.js").ProgressBarStep>>} a promise which resolves when the request is complete or is aborted
@@ -142,7 +142,7 @@ export class ProgressBarStepReader {
 
     /**
      * loads the next page; returns a rejected promise if there is no next page
-     * @returns {Promise.<any>} resolves when the request id completed or aborted
+     * @returns {Promise.<any>} resolves when the request is completed or aborted
      */
     async loadNext() {
         const id = ++this.requestCounter;

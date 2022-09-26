@@ -1,5 +1,4 @@
 import { ProgressBarReader } from "/js/app/progress_bars/progress_bar_reader.js";
-import { ProgressBarStepReader } from "/js/app/progress_bars/steps/progress_bar_step_reader.js";
 import { SORT_OPTIONS } from "/js/app/progress_bars/steps/progress_bar_step_sort.js";
 import { FormGroup } from "/js/app/resources/form_group.js";
 import { SearchController } from "/js/app/resources/search_controller.js";

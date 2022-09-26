@@ -15,6 +15,7 @@
  *   when the progress bar was created
  * @param {import("/js/app/resources/filter_item.js").FilterItem.<number>} [kwargs.samplingMaxCount]
  *   the maximum number of samples used for prediction for this progress bar
+ * @returns {ProgressBarFilters}
  */
 export function newProgressBarFilters({ userSub = undefined, name = undefined, createdAt = undefined, samplingMaxCount = undefined }) {
     return {
