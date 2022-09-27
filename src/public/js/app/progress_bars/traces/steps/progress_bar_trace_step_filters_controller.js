@@ -154,6 +154,7 @@ export class ProgressBarTraceStepFiltersController {
                             const input = document.createElement("input");
                             input.type = "number";
                             input.min = "1";
+                            input.step = "1";
                             /** @type {function() : any} */
                             const onChange = (() => {
                                 if (
@@ -238,6 +239,8 @@ export class ProgressBarTraceStepFiltersController {
                 (() => {
                     const input = document.createElement("input");
                     input.type = "number";
+                    input.min = "0";
+                    input.step = "1";
                     /** @type {function() : any} */
                     const onChange = (() => {
                         if (isNaN(input.valueAsNumber) || !input.validity.valid) {
