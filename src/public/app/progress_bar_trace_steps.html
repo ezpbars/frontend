@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[TEMPLATE: ["/app.html"]]-->
+        <link rel="stylesheet" href="/css/app/progress_bar_trace_steps.css" />
+        <title>ezpbars progress bar trace steps</title>
+    </head>
+
+    <body>
+        <div class="content">
+            <div class="container">
+                <h1>progress bar trace steps</h1>
+                <a href="/" class="back-button">back</a>
+                <div id="progress-bar-trace-steps"></div>
+            </div>
+        </div>
+        <script type="module" src="/js/login.js"></script>
+        <script type="module">
+            import { ProgressBarTraceStepsController } from "/js/app/progress_bars/traces/steps/progress_bar_trace_steps_controller.js";
+            document.getElementById("progress-bar-trace-steps").appendChild(new ProgressBarTraceStepsController().element);
+        </script>
+    </body>
+</html>

@@ -66,13 +66,13 @@ export class ProgressBarReader {
     /**
      * updates the items to match the result from the given filter and sort so long as
      * the request counter matched the id throughout the entire process
-     * @param {import("/js/app/progress_bars/progress_bar_filters.js").ProgressBarFilters} filter 
+     * @param {import("/js/app/progress_bars/progress_bar_filters.js").ProgressBarFilters} filter
      *   the filter to use
-     * @param {import("/js/app/progress_bars/progress_bar_sort.js").ProgressBarSort} sort 
+     * @param {import("/js/app/progress_bars/progress_bar_sort.js").ProgressBarSort} sort
      *   the sort ot use
      * @param {number} limit the maximum number of results to load
      * @param {number} id the value of the request counter for this request
-     * @returns {Promise.<any>} a promise which resolves when the request is complete or is aborted
+     * @returns {Promise.<Array.<import("/js/app/progress_bars/progress_bar.js").ProgressBar>>} a promise which resolves when the request is complete or is aborted
      * @private
      */
     async load(filter, sort, limit, id) {
@@ -87,8 +87,8 @@ export class ProgressBarReader {
                 body: JSON.stringify({
                     filters: progressBarFiltersToApi(filter),
                     sort,
-                    limit
-                })
+                    limit,
+                }),
             })
         );
         if (this.requestCounter !== id) {
@@ -110,7 +110,7 @@ export class ProgressBarReader {
         for (let item of data.items) {
             newItems.push(parseProgressBar(item));
         }
-        this.items.splice(this.items.get().length, 0, ...newItems);
+        return newItems;
     }
     /**
      * loads the first page matching the current sort filters
@@ -119,8 +119,10 @@ export class ProgressBarReader {
      */
     async reload() {
         const id = ++this.requestCounter;
-        this.items.splice(0, this.items.get().length);
-        return await this.load(this.filters.value, this.sort.value, this.limit.value, id);
+        const items = await this.load(this.filters.value, this.sort.value, this.limit.value, id);
+        if (items !== undefined && items !== null) {
+            this.items.set(items);
+        }
     }
     /**
      * loads the next page; returns a rejected promise if there is no next page
@@ -128,6 +130,9 @@ export class ProgressBarReader {
      */
     async loadNext() {
         const id = ++this.requestCounter;
-        return await this.load(this.filters.value, this.nextPageSort, this.limit.value, id);
+        const items = await this.load(this.filters.value, this.nextPageSort, this.limit.value, id);
+        if (items !== undefined && items !== null) {
+            this.items.splice(this.items.get().length, 0, ...items);
+        }
     }
 }
