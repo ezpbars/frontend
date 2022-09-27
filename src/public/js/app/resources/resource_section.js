@@ -13,6 +13,7 @@ export class ResourceSection {
      * @param {ReplicaListener & ListenerOf<T,K>} data the underlying resource
      * @param {K} key the key to use
      * @param {object} kwargs keyword arguments
+     * @param {string} [kwargs.label] the label to use, defaults to the key
      * @param {function(T) : string | Node | null} [kwargs.formatter] used to
      *   format the value into the element; a string is used as text content, a
      *   Node is inserted, and null collapses the entire section. Defaults to
@@ -28,7 +29,7 @@ export class ResourceSection {
      * @param {Observable.<boolean>} kwargs.edit.editing we add a listener to
      *   determine when we are in editing mode
      */
-    constructor(data, key, { formatter = undefined, edit = undefined }) {
+    constructor(data, key, { label = undefined, formatter = undefined, edit = undefined }) {
         /**
          * The element this view is attached to
          * @type {Element}
@@ -47,6 +48,12 @@ export class ResourceSection {
          * @readonly
          */
         this.key = key;
+        /**
+         * the label to use for the section
+         * @type {Observable.<string>}
+         * @readonly
+         */
+        this.label = new Observable(label !== null && label !== undefined ? label : key);
         /**
          * formats the value into the element; a string is used as text content, a Node is inserted, and null
          * collapses the entire section. Defaults to toString
@@ -68,7 +75,9 @@ export class ResourceSection {
                 const input = document.createElement("input");
                 input.classList.add("resources-section-edit-input");
                 input.type = "text";
-                input.placeholder = key;
+                this.label.addListenerAndInvoke((label) => {
+                    input.placeholder = label;
+                });;
                 data.addListenerAndInvoke(key, (val) => {
                     const formatted = this.formatter(val);
                     if (typeof (formatted) !== "string") {
@@ -99,7 +108,9 @@ export class ResourceSection {
                 section.appendChild((() => {
                     const resourcesKey = document.createElement("div");
                     resourcesKey.classList.add("resources-key");
-                    resourcesKey.textContent = this.key;
+                    this.label.addListenerAndInvoke((label) => {
+                        resourcesKey.textContent = label;
+                    });
                     return resourcesKey;
                 })());
                 section.appendChild((() => {

@@ -3,7 +3,7 @@ import { Observable } from "/js/lib/observable.js";
 
 export class FormGroup {
     /**
-     * 
+     *
      * @param {Element} child the input-like element
      * @param {string} labelText the text to go in the label
      * @param {object} [kwargs] optional key word arguments
@@ -47,7 +47,7 @@ export class FormGroup {
          */
         this.help = new Observable(kwargs.help);
         /**
-         * 
+         *
          * @type {string}
          * @readonly
          * @private
@@ -55,61 +55,78 @@ export class FormGroup {
         this.id = "res-" + Math.random().toString(36).substring(2);
         this.render();
     }
+    /**
+     * Adds the appropriate contents to the element for this view. Should
+     * only be called once
+     * @private
+     */
     render() {
         this.element.classList.add("resources-form-group");
-        this.element.appendChild((() => {
-            const label = document.createElement("label");
-            label.setAttribute("for", this.id);
-            this.labelText.addListenerAndInvoke((labelText) => {
-                label.textContent = labelText;
-            });
-            return label;
-        })());
+        this.element.appendChild(
+            (() => {
+                const label = document.createElement("label");
+                label.setAttribute("for", this.id);
+                this.labelText.addListenerAndInvoke((labelText) => {
+                    label.textContent = labelText;
+                });
+                return label;
+            })()
+        );
         this.child.setAttribute("id", this.id);
         this.element.appendChild(this.child);
-        this.element.appendChild((() => {
-            const collapse = new Collapse((() => {
-                const div = document.createElement("div");
-                div.classList.add("resources-form-error");
-                this.error.addListenerAndInvoke((error) => {
-                    if (error === null) {
-                        return;
-                    }
-                    div.textContent = "";
-                    if (typeof (error) === "string") {
-                        div.textContent = error;
-                    } else {
-                        div.appendChild(error);
-                    }
+        this.element.appendChild(
+            (() => {
+                const collapse = new Collapse(
+                    (() => {
+                        const div = document.createElement("div");
+                        div.classList.add("resources-form-error");
+                        this.error.addListenerAndInvoke((error) => {
+                            if (error === null) {
+                                return;
+                            }
+                            div.textContent = "";
+                            if (typeof error === "string") {
+                                div.textContent = error;
+                            } else {
+                                div.appendChild(error);
+                            }
+                        });
+                        return div;
+                    })(),
+                    { visible: this.error.value !== null }
+                );
+                this.error.addListener((error) => {
+                    collapse.visible.value = error !== null;
                 });
-                return div;
-            })(), { visible: this.error.value !== null });
-            this.error.addListener((error) => {
-                collapse.visible.value = error !== null;
-            });
-            return collapse.element;
-        })());
-        this.element.appendChild((() => {
-            const collapse = new Collapse((() => {
-                const div = document.createElement("div");
-                div.classList.add("resources-form-help");
-                this.help.addListenerAndInvoke((help) => {
-                    if (help === null) {
-                        return;
-                    }
-                    div.textContent = "";
-                    if (typeof (help) === "string") {
-                        div.textContent = help;
-                    } else {
-                        div.appendChild(help);
-                    }
+                return collapse.element;
+            })()
+        );
+        this.element.appendChild(
+            (() => {
+                const collapse = new Collapse(
+                    (() => {
+                        const div = document.createElement("div");
+                        div.classList.add("resources-form-help");
+                        this.help.addListenerAndInvoke((help) => {
+                            if (help === null) {
+                                return;
+                            }
+                            div.textContent = "";
+                            if (typeof help === "string") {
+                                div.textContent = help;
+                            } else {
+                                div.appendChild(help);
+                            }
+                        });
+                        return div;
+                    })(),
+                    { visible: this.help.value !== null }
+                );
+                this.help.addListener((help) => {
+                    collapse.visible.value = help !== null;
                 });
-                return div;
-            })(), { visible: this.help.value !== null });
-            this.help.addListener((help) => {
-                collapse.visible.value = help !== null;
-            });
-            return collapse.element;
-        })());
+                return collapse.element;
+            })()
+        );
     }
 }

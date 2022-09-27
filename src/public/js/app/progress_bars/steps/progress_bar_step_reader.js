@@ -1,8 +1,12 @@
 import { parseProgressBarStep } from "/js/app/progress_bars/steps/progress_bar_step.js";
-import { newProgressBarStepFilters, progressBarStepFiltersToApi } from "/js/app/progress_bars/steps/progress_bar_step_filters.js";
+import {
+    newProgressBarStepFilters,
+    progressBarStepFiltersToApi,
+} from "/js/app/progress_bars/steps/progress_bar_step_filters.js";
 import { PBAR_NAME_ALPHABETICAL_AZ } from "/js/app/progress_bars/steps/progress_bar_step_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
+import { debounce } from "/js/debounce.js";
 import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js";
@@ -14,8 +18,19 @@ import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js
 export class ProgressBarStepReader {
     /**
      * creates a new reader with the default filter and sorts
+     * @param {object} [kwargs] keyword arguments
+     * @param {number} [kwargs.debounceMs=1] the number of milliseconds to debounce
+     *   reload requests; null to disable debouncing (runs synchronously), 0 to
+     *   run as soon as js yields, higher numbers to delay
      */
-    constructor() {
+    constructor(kwargs) {
+        kwargs = Object.assign({ debounceMs: 1 }, kwargs);
+        /**
+         * the number of milliseconds to debounce reload requests; null to disable debouncing
+         * @type {number}
+         * @readonly
+         */
+        this.debounceMs = kwargs.debounceMs;
         /**
          * the filters for the list of items
          * @type {Observable.<import("/js/app/progress_bars/steps/progress_bar_step_filters.js").ProgressBarStepFilters>}
@@ -59,16 +74,17 @@ export class ProgressBarStepReader {
          * @private
          */
         this.requestCounter = 0;
-        this.filters.addListener(this.reload.bind(this));
-        this.sort.addListener(this.reload.bind(this));
-        this.reload();
+        const reloadAfterDebounce = debounce(this.reload.bind(this), this.debounceMs);
+        this.filters.addListener(reloadAfterDebounce);
+        this.sort.addListener(reloadAfterDebounce);
+        reloadAfterDebounce();
     }
     /**
      * updates the items to match the result from the given filter and sort so long as
      * the request counter matched the id throughout the entire process
-     * @param {import("/js/app/progress_bars/steps/progress_bar_step_filters.js").ProgressBarStepFilters} filter 
+     * @param {import("/js/app/progress_bars/steps/progress_bar_step_filters.js").ProgressBarStepFilters} filter
      *   the filter to use
-     * @param {import("/js/app/progress_bars/steps/progress_bar_step_sort.js").ProgressBarStepSort} sort 
+     * @param {import("/js/app/progress_bars/steps/progress_bar_step_sort.js").ProgressBarStepSort} sort
      *   the sort ot use
      * @param {number} limit the maximum number of results to load
      * @param {number} id the value of the request counter for this request
@@ -87,8 +103,8 @@ export class ProgressBarStepReader {
                 body: JSON.stringify({
                     filters: progressBarStepFiltersToApi(filter),
                     sort,
-                    limit
-                })
+                    limit,
+                }),
             })
         );
         if (this.requestCounter !== id) {

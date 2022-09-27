@@ -26,15 +26,21 @@ export class ProgressBarsController {
          * @readonly
          */
         this.itemsView = new PageableItems({ onMore: this.reader.loadNext.bind(this.reader) });
-        this.reader.items.addArrayListenerAndInvoke(simpleArrayListener({
-            insert: (index, progressBar) => {
-                const replica = progressBar.createReplica();
-                this.itemsView.items.items.splice(index, 0, new ProgressBarView(replica, this.onDelete.bind(this, replica)));
-            },
-            remove: (index) => {
-                this.itemsView.items.items.splice(index, 1)[0].progressBar.detach();
-            }
-        }));
+        this.reader.items.addArrayListenerAndInvoke(
+            simpleArrayListener({
+                insert: (index, progressBar) => {
+                    const replica = progressBar.createReplica();
+                    this.itemsView.items.items.splice(
+                        index,
+                        0,
+                        new ProgressBarView(replica, this.onDelete.bind(this, replica))
+                    );
+                },
+                remove: (index) => {
+                    this.itemsView.items.items.splice(index, 1)[0].progressBar.detach();
+                },
+            })
+        );
         this.reader.hasNextPage.addListenerAndInvoke((hasNext) => {
             this.itemsView.hasMore.value = hasNext;
         });
@@ -48,6 +54,8 @@ export class ProgressBarsController {
         });
         /**
          * the view for changing the filters and sort
+         * @type {ProgressBarFilterController}
+         * @readonly
          */
         this.filterController = new ProgressBarFilterController(this.reader.filters.value, this.reader.sort.value);
         this.filterController.filters.addListener((filters) => {
@@ -70,11 +78,13 @@ export class ProgressBarsController {
         }
     }
     /**
-     * adds the appropriate contents to the element for thsi view. Should
+     * adds the appropriate contents to the element for this view. Should
      * only be called once
      * @private
      */
     render() {
-        this.element.appendChild(new Listing(this.itemsView, this.createProgressBarForm, this.filterController).element);
+        this.element.appendChild(
+            new Listing(this.itemsView, this.createProgressBarForm, this.filterController).element
+        );
     }
 }

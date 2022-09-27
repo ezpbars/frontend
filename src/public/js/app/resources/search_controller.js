@@ -1,6 +1,12 @@
 import { Collapse } from "/js/app/resources/collapse.js";
 import { Observable } from "/js/lib/observable.js";
-import { ArrayListenerOf, ListenerOf, newArrayListenerOf, ReplicaListener, simpleArrayListener } from "/js/lib/replica_listener.js";
+import {
+    ArrayListenerOf,
+    ListenerOf,
+    newArrayListenerOf,
+    ReplicaListener,
+    simpleArrayListener,
+} from "/js/lib/replica_listener.js";
 
 /**
  * a single option that the user can choose
@@ -9,7 +15,7 @@ import { ArrayListenerOf, ListenerOf, newArrayListenerOf, ReplicaListener, simpl
  */
 class SearchControllerOption {
     /**
-     * 
+     *
      * @param {K} key the field being searched
      * @param {Item} item the match for the search
      * @param {string} searchTerm the query string
@@ -76,11 +82,13 @@ class SearchControllerOption {
             while (resultLower.substring(boldEndsAt, boldEndsAt + searchTerm.length) === searchTermLower) {
                 boldEndsAt += searchTerm.length;
             }
-            this.element.appendChild((() => {
-                const bold = document.createElement("b");
-                bold.textContent = result.substring(boldIndex, boldEndsAt);
-                return bold;
-            })());
+            this.element.appendChild(
+                (() => {
+                    const bold = document.createElement("b");
+                    bold.textContent = result.substring(boldIndex, boldEndsAt);
+                    return bold;
+                })()
+            );
             lookingAt = boldEndsAt;
         }
     }
@@ -108,7 +116,7 @@ class SearchControllerOption {
  */
 class SearchControllerOptionList {
     /**
-     * 
+     *
      * @param {K} key the field that is being searched
      * @param {string} searchTerm the query string from the user
      * @param {function(Item) : any} onClick the function to call when an item is clicked
@@ -157,29 +165,44 @@ class SearchControllerOptionList {
         const replicas = [];
         /** @type {Array.<function(string) : any>} */
         const listeners = [];
-        this.options.addArrayListenerAndInvoke(simpleArrayListener({
-            insert: (idx, val) => {
-                const replica = val.createReplica();
-                replicas.splice(idx, 0, replica);
-                const view = new SearchControllerOption(this.key, replica, this.searchTerm.value, this.onClick.bind(this, val));
-                /** @type {function(string) : any} */
-                const listener = (searchTerm) => {
-                    view.searchTerm.value = searchTerm;
-                };
-                this.searchTerm.addListener(listener);
-                listeners.splice(idx, 0, listener);
-                if (idx === 0) {
-                    this.element.insertAdjacentElement("afterbegin", view.element);
-                } else {
-                    this.element.children[idx - 1].insertAdjacentElement("afterend", view.element);
-                }
-            },
-            remove: (idx) => {
-                this.element.children[idx].remove();
-                replicas.splice(idx, 1)[0].detach();
-                this.searchTerm.removeListener(listeners.splice(idx, 1)[0]);
-            }
-        }, { thisArg: this }));
+        this.options.addArrayListenerAndInvoke(
+            simpleArrayListener(
+                {
+                    insert: (idx, val) => {
+                        const replica = val.createReplica();
+                        replicas.splice(idx, 0, replica);
+                        const view = new SearchControllerOption(
+                            this.key,
+                            replica,
+                            this.searchTerm.value,
+                            (() => {
+                                this.onClick(this.options.at(idx));
+                            }).bind(this)
+                        );
+                        /** @type {function(string) : any} */
+                        const listener = (searchTerm) => {
+                            view.searchTerm.value = searchTerm;
+                        };
+                        this.searchTerm.addListener(listener);
+                        listeners.splice(idx, 0, listener);
+                        if (idx === 0) {
+                            this.element.insertAdjacentElement("afterbegin", view.element);
+                        } else {
+                            this.element.children[idx - 1].insertAdjacentElement("afterend", view.element);
+                        }
+                    },
+                    remove: (idx) => {
+                        this.element.children[idx].remove();
+                        replicas.splice(idx, 1)[0].detach();
+                        this.searchTerm.removeListener(listeners.splice(idx, 1)[0]);
+                    },
+                    replace: (idx, val) => {
+                        replicas[idx].copyFrom(val);
+                    },
+                },
+                { thisArg: this }
+            )
+        );
     }
 }
 
@@ -187,7 +210,7 @@ class SearchControllerOptionList {
  * given a reader for an item with a text searchable field, this shows a text
  * input which autocompletes to one of the items using the given text searchable
  * field
- * 
+ *
  * @template {string} K the key in the item which maps to the field they are searching on
  * @template {ReplicaListener & ListenerOf.<string, K>} Item the item type being searched
  * @template Filter the filter object capable of restricting items using a FilterTextItem
@@ -195,9 +218,9 @@ class SearchControllerOptionList {
 export class SearchController {
     /**
      * @param {K} key the field being searched
-     * @param {{items: ArrayListenerOf.<Item>, filters: Observable.<Filter>, limit: Observable.<number>}} reader 
+     * @param {{items: ArrayListenerOf.<Item>, filters: Observable.<Filter>, limit: Observable.<number>}} reader
      *   the reader-like object which ocntains the filters which update the items when changed
-     * @param {function(Filter) : import("/js/app/resources/filter_text_item.js").FilterTextItem} filterGet 
+     * @param {function(Filter) : import("/js/app/resources/filter_text_item.js").FilterTextItem} filterGet
      *   a work-around for the type system; should be (f) => f[key]
      * @param {function(Filter, import("/js/app/resources/filter_text_item.js").FilterTextItem) : Filter} filterSet
      *   a work-around for the type system; should be (f, v) => Object.assign({}, f, {[key]: v})
@@ -251,9 +274,13 @@ export class SearchController {
          * @readonly
          * @private
          */
-        this.options = new SearchControllerOptionList(key, "", (/** @param {Item} item */ (item) => {
-            this.value.value = item;
-        }).bind(this));
+        this.options = new SearchControllerOptionList(
+            key,
+            "",
+            ((/** @type {Item} item */ item) => {
+                this.value.value = item;
+            }).bind(this)
+        );
         this.searchTerm.addListener((searchTerm) => {
             this.value.value = null;
             this.options.searchTerm.value = searchTerm;
@@ -262,7 +289,7 @@ export class SearchController {
             } else {
                 this.reader.filters.value = filterSet(this.reader.filters.value, {
                     operator: "ilike",
-                    value: `%${searchTerm.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")}%`
+                    value: `%${searchTerm.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")}%`,
                 });
             }
         });
@@ -272,7 +299,7 @@ export class SearchController {
             },
             set: (arr) => {
                 this.options.options.set(arr);
-            }
+            },
         });
         this.render();
     }
@@ -291,52 +318,60 @@ export class SearchController {
                 this.element.classList.remove("resources-search-controller-focused");
             }
         });
-        this.element.appendChild((() => {
-            const div = document.createElement("div");
-            div.classList.add("resources-search-controller-input-container");
-            div.appendChild((() => {
-                const input = document.createElement("input");
-                input.type = "text";
-                let eventCount = 0;
-                input.addEventListener("focus", (e) => {
-                    focused.value = true;
-                    eventCount++;
+        this.element.appendChild(
+            (() => {
+                const div = document.createElement("div");
+                div.classList.add("resources-search-controller-input-container");
+                div.appendChild(
+                    (() => {
+                        const input = document.createElement("input");
+                        input.type = "text";
+                        let eventCount = 0;
+                        input.addEventListener("focus", (e) => {
+                            focused.value = true;
+                            eventCount++;
+                        });
+                        input.addEventListener("blur", (e) => {
+                            const id = ++eventCount;
+                            setTimeout(() => {
+                                if (eventCount === id) {
+                                    focused.value = false;
+                                }
+                            }, 100);
+                        });
+                        const updateInput = () => {
+                            if (this.value.value !== null) {
+                                input.value = this.value.value.get(this.key);
+                            } else {
+                                input.value = this.searchTerm.value;
+                            }
+                        };
+                        this.value.addListener(updateInput);
+                        this.searchTerm.addListener(updateInput);
+                        updateInput();
+                        const handleChange = (() => {
+                            this.searchTerm.value = input.value;
+                        }).bind(this);
+                        input.addEventListener("change", handleChange);
+                        input.addEventListener("keyup", handleChange);
+                        return input;
+                    })()
+                );
+                return div;
+            })()
+        );
+        this.element.appendChild(
+            (() => {
+                const collapse = new Collapse(this.options.element, {
+                    visible: this.value.value === null && focused.value,
                 });
-                input.addEventListener("blur", (e) => {
-                    const id = ++eventCount;
-                    setTimeout(() => {
-                        if (eventCount === id) {
-                            focused.value = false;
-                        }
-                    }, 100);
-                });
-                const updateInput = () => {
-                    if (this.value.value !== null) {
-                        input.value = this.value.value.get(this.key);
-                    } else {
-                        input.value = this.searchTerm.value;
-                    }
+                const updateVisibilty = () => {
+                    collapse.visible.value = this.value.value === null && focused.value;
                 };
-                this.value.addListener(updateInput);
-                this.searchTerm.addListener(updateInput);
-                updateInput();
-                const handleChange = (() => {
-                    this.searchTerm.value = input.value;
-                }).bind(this);
-                input.addEventListener("change", handleChange);
-                input.addEventListener("keyup", handleChange);
-                return input;
-            })());
-            return div;
-        })());
-        this.element.appendChild((() => {
-            const collapse = new Collapse(this.options.element, { visible: this.value.value === null && focused.value });
-            const updateVisibilty = () => {
-                collapse.visible.value = this.value.value === null && focused.value;
-            };
-            this.value.addListener(updateVisibilty);
-            focused.addListener(updateVisibilty);
-            return collapse.element;
-        })());
+                this.value.addListener(updateVisibilty);
+                focused.addListener(updateVisibilty);
+                return collapse.element;
+            })()
+        );
     }
 }
