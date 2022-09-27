@@ -13,4 +13,4 @@ jobs:
             - name: Prettify code
               uses: creyD/prettier_action@v4.2
               with:
-                  prettier_options: --print-width 120 --tab-width 4 --write src/public/**/*.js src/public/**/*.html
+                  prettier_options: --print-width 120 --tab-width 4 --end-of-line lf --check src/public/**/*.js src/public/**/*.html
