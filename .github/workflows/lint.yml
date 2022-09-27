@@ -15,4 +15,4 @@ jobs:
               with:
                   # This part is also where you can pass other options, for example:
                   dry: True
-                  prettier_options: --check
+                  prettier_options: --check src/public/**/*.js src/public/**/*.html
