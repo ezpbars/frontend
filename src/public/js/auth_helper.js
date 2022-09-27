@@ -32,8 +32,8 @@ export class AuthHelper {
         return JSON.parse(serd);
     }
     /**
-     * adds the appropriate authorization headers to the given fetch arguments 
-     * 
+     * adds the appropriate authorization headers to the given fetch arguments
+     *
      * example:
      * ```
      * const response = await fetch(
@@ -60,7 +60,7 @@ export class AuthHelper {
         return result;
     }
     /**
-     * 
+     *
      * @returns {boolean} true if logged in, false if not
      */
     static isLoggedIn() {

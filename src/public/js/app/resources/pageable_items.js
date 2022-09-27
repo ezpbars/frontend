@@ -50,28 +50,33 @@ export class PageableItems {
     render() {
         this.element.classList.add("resources-pageable-items");
         this.element.appendChild(this.items.element);
-        this.element.appendChild((() => {
-            const collapse = new Collapse((() => {
-                const button = document.createElement("button");
-                button.classList.add("resources-pageable-items-load-more");
-                button.textContent = "Load More";
-                button.type = "button";
-                button.addEventListener("click", async (ev) => {
-                    ev.preventDefault();
-                    // TODO: error handling
-                    button.disabled = true;
-                    try {
-                        await this.onMore();
-                    } finally {
-                        button.disabled = false;
-                    }
+        this.element.appendChild(
+            (() => {
+                const collapse = new Collapse(
+                    (() => {
+                        const button = document.createElement("button");
+                        button.classList.add("resources-pageable-items-load-more");
+                        button.textContent = "Load More";
+                        button.type = "button";
+                        button.addEventListener("click", async (ev) => {
+                            ev.preventDefault();
+                            // TODO: error handling
+                            button.disabled = true;
+                            try {
+                                await this.onMore();
+                            } finally {
+                                button.disabled = false;
+                            }
+                        });
+                        return button;
+                    })(),
+                    { visible: this.hasMore.value }
+                );
+                this.hasMore.addListener((visible) => {
+                    collapse.visible.value = visible;
                 });
-                return button;
-            })(), { visible: this.hasMore.value });
-            this.hasMore.addListener((visible) => {
-                collapse.visible.value = visible;
-            });
-            return collapse.element;
-        })());
+                return collapse.element;
+            })()
+        );
     }
 }

@@ -72,23 +72,20 @@ async function handleExpiringTokens() {
     if (tokens.refresh === null || tokens.refresh === undefined) {
         return;
     }
-    const response = await fetch(
-        "https://" + AUTH_DOMAIN.substring(0, AUTH_DOMAIN.length - 1) + "/",
-        {
-            method: "POST",
-            headers: {
-                "content-type": "application/x-amz-json-1.1",
-                "x-amz-target": "AWSCognitoIdentityProviderService/InitiateAuth",
+    const response = await fetch("https://" + AUTH_DOMAIN.substring(0, AUTH_DOMAIN.length - 1) + "/", {
+        method: "POST",
+        headers: {
+            "content-type": "application/x-amz-json-1.1",
+            "x-amz-target": "AWSCognitoIdentityProviderService/InitiateAuth",
+        },
+        body: JSON.stringify({
+            AuthFlow: "REFRESH_TOKEN_AUTH",
+            AuthParameters: {
+                REFRESH_TOKEN: tokens.refresh,
             },
-            body: JSON.stringify({
-                AuthFlow: "REFRESH_TOKEN_AUTH",
-                AuthParameters: {
-                    REFRESH_TOKEN: tokens.refresh
-                },
-                ClientId: AUTH_CLIENT_ID
-            })
-        }
-    );
+            ClientId: AUTH_CLIENT_ID,
+        }),
+    });
     if (!response.ok) {
         window.location.href = LOGIN_URL;
         return;

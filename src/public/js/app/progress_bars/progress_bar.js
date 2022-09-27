@@ -9,12 +9,12 @@ import { implementReplicaListener, ListenerOf, ReplicaListener } from "/js/lib/r
  * @type {{"systematic": "systematic","simple_random": "simpleRandom"}}
  */
 export const SAMPLING_TECHNIQUE_API_TO_NATIVE = {
-    "systematic": "systematic",
-    "simple_random": "simpleRandom"
+    systematic: "systematic",
+    simple_random: "simpleRandom",
 };
 export const SAMPLING_TECHNIQUE_NATIVE_TO_API = {
-    "systematic": "systematic",
-    "simpleRandom": "simple_random"
+    systematic: "systematic",
+    simpleRandom: "simple_random",
 };
 
 /**
@@ -31,7 +31,17 @@ export const SAMPLING_TECHNIQUE_NATIVE_TO_API = {
  * @param {{user_sub: string, progress_bar_name: string, uid: string, name: string, position: number, iterated: number, one_off_technique: "percentile" | "harmonic_mean" | "geometric_mean" | "arithmetic_mean", one_off_percentile: number, iterated_technique: "best_fit.linear" | "percentile" | "harmonic_mean" | "geometric_mean" | "arithmetic_mean", iterated_percentile: number, created_at: number}} kwargs.default_step_config the configuration to use for the default step
  * @returns {ProgressBar} the parsed progress bar
  */
-export function parseProgressBar({ user_sub, uid, name, sampling_max_count, sampling_max_age_seconds, sampling_technique, version, created_at, default_step_config }) {
+export function parseProgressBar({
+    user_sub,
+    uid,
+    name,
+    sampling_max_count,
+    sampling_max_age_seconds,
+    sampling_technique,
+    version,
+    created_at,
+    default_step_config,
+}) {
     return implementReplicaListener(
         { key: "userSub", val: user_sub },
         { key: "uid", val: uid },

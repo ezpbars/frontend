@@ -7,7 +7,7 @@ import { Observable } from "/js/lib/observable.js";
  */
 export class Collapse {
     /**
-     * 
+     *
      * @param {Element} child the element to show or hide
      * @param {object} kwargs the keyword arguments
      * @param {boolean} kwargs.visible if the element should initially be visible
@@ -30,11 +30,11 @@ export class Collapse {
          * (under half a second) while the animation is playing that this value
          * does not reflect the ture visibility of the element, however the
          * element will eventually match this visibility if it is not changed
-         * 
+         *
          * the listeners on this attribute will return a promise which resolves
          * as soon as one of two things happen:
          * 1. the value of visible is changed
-         * 2. the elements visibilty now matches its new value 
+         * 2. the elements visibilty now matches its new value
          * @type {Observable.<boolean>}
          * @readonly
          */

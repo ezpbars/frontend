@@ -10,7 +10,7 @@ import { ListenerOf, ReplicaListener } from "/js/lib/replica_listener.js";
  */
 export class UserTokenView {
     /**
-     * 
+     *
      * @param {import("/js/app/user_tokens/user_token.js").UserToken} userToken the user token to show
      * @param {function() : any} onDelete function to call after the user deleted this user token
      */
@@ -74,7 +74,7 @@ export class UserTokenView {
                 headers: { "content-type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({
                     name,
-                })
+                }),
             })
         );
         if (!response.ok) {
@@ -89,38 +89,49 @@ export class UserTokenView {
      */
     render() {
         this.element.classList.add("user-tokens-user-token-view", "elevation-medium");
-        this.element.appendChild(new Controls({
-            onDelete: this._onDelete.bind(this),
-            onEdit: this._onEdit.bind(this),
-            editing: this.editing
-        }).element);
-        this.element.appendChild((() => {
-            /** @type {ReplicaListener & ListenerOf.<string, "token">} */
-            const data = this.userToken;
-            return (new ResourceSection(data, "token", { formatter: (token) => token })).element;
-        })());
-        this.element.appendChild((() => {
-            /** @type {ReplicaListener & ListenerOf.<string, "name">} */
-            const data = this.userToken;
-            return new ResourceSection(data, "name", { edit: { fromString: s => s, editing: this.editing } }).element;
-        })());
-        this.element.appendChild((() => {
-            /** @type {ReplicaListener & ListenerOf.<Date, "createdAt">} */
-            const data = this.userToken;
-            return (new ResourceSection(data, "createdAt", { formatter: (createdAt) => createdAt.toLocaleString() })).element;
-        })());
-        this.element.appendChild((() => {
-            /** @type {ReplicaListener & ListenerOf.<Date, "expiresAt">} */
-            const data = this.userToken;
-            return (new ResourceSection(data, "expiresAt",
-                {
+        this.element.appendChild(
+            new Controls({
+                onDelete: this._onDelete.bind(this),
+                onEdit: this._onEdit.bind(this),
+                editing: this.editing,
+            }).element
+        );
+        this.element.appendChild(
+            (() => {
+                /** @type {ReplicaListener & ListenerOf.<string, "token">} */
+                const data = this.userToken;
+                return new ResourceSection(data, "token", { formatter: (token) => token }).element;
+            })()
+        );
+        this.element.appendChild(
+            (() => {
+                /** @type {ReplicaListener & ListenerOf.<string, "name">} */
+                const data = this.userToken;
+                return new ResourceSection(data, "name", { edit: { fromString: (s) => s, editing: this.editing } })
+                    .element;
+            })()
+        );
+        this.element.appendChild(
+            (() => {
+                /** @type {ReplicaListener & ListenerOf.<Date, "createdAt">} */
+                const data = this.userToken;
+                return new ResourceSection(data, "createdAt", { formatter: (createdAt) => createdAt.toLocaleString() })
+                    .element;
+            })()
+        );
+        this.element.appendChild(
+            (() => {
+                /** @type {ReplicaListener & ListenerOf.<Date, "expiresAt">} */
+                const data = this.userToken;
+                return new ResourceSection(data, "expiresAt", {
                     formatter: (expiresAt) => {
                         if (expiresAt !== null) {
                             return expiresAt.toLocaleString();
                         }
                         return "Never Expires";
-                    }
-                })).element;
-        })());
+                    },
+                }).element;
+            })()
+        );
     }
 }
