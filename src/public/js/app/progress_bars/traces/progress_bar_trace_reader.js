@@ -117,7 +117,7 @@ export class ProgressBarTraceReader {
     }
 
     /**
-     * loads teh next page; returns a rejected promise if there is no next page
+     * loads the next page; returns a rejected promise if there is no next page
      * @returns {Promise.<any>} resolves when the request is complete or aborted
      */
     async loadNext() {
