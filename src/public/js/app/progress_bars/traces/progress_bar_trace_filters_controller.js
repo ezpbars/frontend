@@ -4,12 +4,15 @@ import { FormGroup } from "/js/app/resources/form_group.js";
 import { SearchController } from "/js/app/resources/search_controller.js";
 import { Observable } from "/js/lib/observable.js";
 
+/**
+ * responsible for showing and allowing the user to edit the progress bar trace filters and sort
+ */
 export class ProgressBarTraceFiltersController {
     /**
-     * 
-     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_filters.js").ProgressBarTraceFilters} filters 
+     *
+     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_filters.js").ProgressBarTraceFilters} filters
      *   the filters to show and allow editing of
-     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_sort.js").ProgressBarTraceSort} sort 
+     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_sort.js").ProgressBarTraceSort} sort
      *   the sort to show and allow editing of
      */
     constructor(filters, sort) {
@@ -33,55 +36,69 @@ export class ProgressBarTraceFiltersController {
         this.sort = new Observable(sort);
         this.render();
     }
+    /**
+     * adds the appropriate contents to the element for thsi view. Should
+     * only be called once
+     * @private
+     */
     render() {
         this.element.classList.add("progress-bar-trace-filters-controller", "elevation-medium");
-        this.element.appendChild(new FormGroup((() => {
-            const searchController = new SearchController(
-                "name",
-                new ProgressBarReader(),
-                (f) => f.name,
-                (f, v) => Object.assign({}, f, { name: v })
-            );
-            searchController.value.addListener((progressBar) => {
-                if (progressBar !== null) {
-                    this.filters.value = Object.assign(
-                        {},
-                        this.filters.value,
-                        {
-                            progressBarName: { operator: "eq", value: progressBar.get("name") }
-                        }
+        this.element.appendChild(
+            new FormGroup(
+                (() => {
+                    const searchController = new SearchController(
+                        "name",
+                        new ProgressBarReader(),
+                        (f) => f.name,
+                        (f, v) => Object.assign({}, f, { name: v })
                     );
-                } else if (this.filters.value.progressBarName !== null) {
-                    this.filters.value = Object.assign(
-                        {},
-                        this.filters.value,
-                        {
-                            progressBarName: null
+                    searchController.value.addListener((progressBar) => {
+                        if (progressBar !== null) {
+                            if (
+                                this.filters.value.progressBarName === null ||
+                                this.filters.value.progressBarName.value !== progressBar.get("name")
+                            ) {
+                                this.filters.value = Object.assign({}, this.filters.value, {
+                                    progressBarName: { operator: "eq", value: progressBar.get("name") },
+                                });
+                            }
+                        } else if (this.filters.value.progressBarName !== null) {
+                            this.filters.value = Object.assign({}, this.filters.value, {
+                                progressBarName: null,
+                            });
                         }
-                    );
-                }
-            });
-            return searchController.element;
-        })(), "Progress Bar").element);
-        this.element.appendChild(new FormGroup((() => {
-            const select = document.createElement("select");
-            for (let sortOption of SORT_OPTIONS) {
-                select.appendChild((() => {
-                    const option = document.createElement("option");
-                    option.value = sortOption.name;
-                    option.textContent = sortOption.name;
-                    return option;
-                })());
-            }
-            this.sort.addListenerAndInvoke((sort) => {
-                const sortOption = SORT_OPTIONS.find((opt) => opt.val === sort);
-                select.value = sortOption.name;
-            });
-            select.addEventListener("change", (e) => {
-                const sortOption = SORT_OPTIONS.find((opt) => opt.name === select.value);
-                this.sort.value = sortOption.val;
-            });
-            return select;
-        })(), "sort").element);
+                    });
+                    return searchController.element;
+                })(),
+                "Progress Bar"
+            ).element
+        );
+        this.element.appendChild(
+            new FormGroup(
+                (() => {
+                    const select = document.createElement("select");
+                    for (let sortOption of SORT_OPTIONS) {
+                        select.appendChild(
+                            (() => {
+                                const option = document.createElement("option");
+                                option.value = sortOption.name;
+                                option.textContent = sortOption.name;
+                                return option;
+                            })()
+                        );
+                    }
+                    this.sort.addListenerAndInvoke((sort) => {
+                        const sortOption = SORT_OPTIONS.find((opt) => opt.val === sort);
+                        select.value = sortOption.name;
+                    });
+                    select.addEventListener("change", (e) => {
+                        const sortOption = SORT_OPTIONS.find((opt) => opt.name === select.value);
+                        this.sort.value = sortOption.val;
+                    });
+                    return select;
+                })(),
+                "sort"
+            ).element
+        );
     }
 }

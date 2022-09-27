@@ -18,4 +18,4 @@ export function parseProgressBarTrace({ user_sub, progress_bar_name, uid, create
         { key: "uid", val: uid },
         { key: "createdAt", val: new Date(created_at * 1000) }
     );
-};
+}

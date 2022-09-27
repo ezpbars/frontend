@@ -1,5 +1,8 @@
 import { parseProgressBarTrace } from "/js/app/progress_bars/traces/progress_bar_trace.js";
-import { newProgressBarTraceFilters, progressBarTraceFiltersToApi } from "/js/app/progress_bars/traces/progress_bar_trace_filters.js";
+import {
+    newProgressBarTraceFilters,
+    progressBarTraceFiltersToApi,
+} from "/js/app/progress_bars/traces/progress_bar_trace_filters.js";
 import { NEWEST_TO_OLDEST } from "/js/app/progress_bars/traces/progress_bar_trace_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
@@ -7,6 +10,10 @@ import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js";
 
+/**
+ * loads progress bar traces matching the given filters and sorts with the option to
+ * get the next page; automatically resets if the filters or sorts change
+ */
 export class ProgressBarTraceReader {
     constructor() {
         /**
@@ -22,7 +29,7 @@ export class ProgressBarTraceReader {
          */
         this.sort = new Observable(NEWEST_TO_OLDEST);
         /**
-         * the maximum numebr of items to laod at a time
+         * the maximum number of items to load at a time
          * @type {Observable.<number>}
          * @readonly
          */
@@ -59,7 +66,7 @@ export class ProgressBarTraceReader {
     /**
      * updates the items to match the result form the given fitler and sort so long as
      * the request counter matches the id throughout the entire process
-     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_filters.js").ProgressBarTraceFilters} filter 
+     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_filters.js").ProgressBarTraceFilters} filter
      *   the filter to use
      * @param {import("/js/app/progress_bars/traces/progress_bar_trace_sort.js").ProgressBarTraceSort} sort the sort to use
      * @param {number} limit the maximum number of results to load
@@ -79,7 +86,7 @@ export class ProgressBarTraceReader {
                     filters: progressBarTraceFiltersToApi(filter),
                     sort,
                     limit,
-                })
+                }),
             })
         );
         if (this.requestCounter !== id) {

@@ -27,17 +27,13 @@
  * sorts by when the trace was created from newest to oldest
  * @type {ProgressBarTraceSort}
  */
-export const NEWEST_TO_OLDEST = [
-    { key: "created_at", dir: "desc", before: null, after: null },
-];
+export const NEWEST_TO_OLDEST = [{ key: "created_at", dir: "desc", before: null, after: null }];
 
 /**
  * sorts by when the trace was created from oldest to newest
  * @type {ProgressBarTraceSort}
  */
-export const OLDEST_TO_NEWEST = [
-    { key: "created_at", dir: "asc", before: null, after: null },
-];
+export const OLDEST_TO_NEWEST = [{ key: "created_at", dir: "asc", before: null, after: null }];
 
 /**
  * sorts first by progress bar name a to z, then by when the trace was created from newest to oldest
@@ -45,7 +41,7 @@ export const OLDEST_TO_NEWEST = [
  */
 export const PBAR_NAME_ALPHABETICAL_AZ = [
     { key: "progress_bar_name", dir: "asc", before: null, after: null },
-    { key: "created_at", dir: "desc", before: null, after: null }
+    { key: "created_at", dir: "desc", before: null, after: null },
 ];
 
 /**
@@ -54,7 +50,7 @@ export const PBAR_NAME_ALPHABETICAL_AZ = [
  */
 export const PBAR_NAME_ALPHABETICAL_ZA = [
     { key: "progress_bar_name", dir: "desc", before: null, after: null },
-    { key: "created_at", dir: "desc", before: null, after: null }
+    { key: "created_at", dir: "desc", before: null, after: null },
 ];
 
 export const SORT_OPTIONS = [
