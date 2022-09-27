@@ -100,7 +100,17 @@ export class UserTokenView {
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<string, "token">} */
                 const data = this.userToken;
-                return new ResourceSection(data, "token", { formatter: (token) => token }).element;
+                return new ResourceSection(data, "token", {
+                    formatter: (token) => {
+                        if (token === null) {
+                            return null;
+                        }
+                        const pre = document.createElement("pre");
+                        pre.textContent = token;
+                        pre.classList.add("user-tokens-user-token-view-token");
+                        return pre;
+                    },
+                }).element;
             })()
         );
         this.element.appendChild(
