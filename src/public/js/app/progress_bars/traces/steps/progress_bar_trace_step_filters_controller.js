@@ -97,12 +97,17 @@ export class ProgressBarTraceStepFiltersController {
                             );
                             searchController.value.addListener((progressBarStep) => {
                                 if (progressBarStep !== null) {
-                                    this.filters.value = Object.assign({}, this.filters.value, {
-                                        progressBarStepName: {
-                                            operator: "eq",
-                                            value: progressBarStep.get("name"),
-                                        },
-                                    });
+                                    if (
+                                        this.filters.value.progressBarStepName === null ||
+                                        this.filters.value.progressBarStepName.value !== progressBarStep.get("name")
+                                    ) {
+                                        this.filters.value = Object.assign({}, this.filters.value, {
+                                            progressBarStepName: {
+                                                operator: "eq",
+                                                value: progressBarStep.get("name"),
+                                            },
+                                        });
+                                    }
                                 } else if (this.filters.value.progressBarStepName !== null) {
                                     this.filters.value = Object.assign({}, this.filters.value, {
                                         progressBarStepName: null,
