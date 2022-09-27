@@ -19,7 +19,7 @@ export class ProgressBarTraceView {
         this.element = document.createElement("div");
         /**
          * the progress bar trace to show
-         * @type {import("/js/app/progress_bars/traces/progress_bar_trace.js").ProgressBarTrace}
+         * @type {import("/js/app/progress_bars/traces/progress_bar_trace.js").ProgressBarTrace>}
          * @readonly
          */
         this.progressBarTrace = progresBarTrace;
