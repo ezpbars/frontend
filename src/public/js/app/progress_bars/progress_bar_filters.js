@@ -3,7 +3,6 @@
  * @typedef {{userSub: ?import("/js/app/resources/filter_text_item.js").FilterTextItem, name: ?import("/js/app/resources/filter_text_item.js").FilterTextItem, createdAt: ?import("/js/app/resources/filter_item.js").FilterItem.<Date>, samplingMaxCount: ?import("/js/app/resources/filter_item.js").FilterItem.<number>}} ProgressBarFilters
  */
 
-
 /**
  * creates a new set of user filters which has no filters except where specified
  * @param {object} kwargs the initial filters
@@ -17,12 +16,17 @@
  *   the maximum number of samples used for prediction for this progress bar
  * @returns {ProgressBarFilters}
  */
-export function newProgressBarFilters({ userSub = undefined, name = undefined, createdAt = undefined, samplingMaxCount = undefined }) {
+export function newProgressBarFilters({
+    userSub = undefined,
+    name = undefined,
+    createdAt = undefined,
+    samplingMaxCount = undefined,
+}) {
     return {
         userSub: userSub === undefined ? null : userSub,
         name: name === undefined ? null : name,
         createdAt: createdAt === undefined ? null : createdAt,
-        samplingMaxCount: samplingMaxCount === undefined ? null : samplingMaxCount
+        samplingMaxCount: samplingMaxCount === undefined ? null : samplingMaxCount,
     };
 }
 
@@ -35,10 +39,13 @@ export function progressBarFiltersToApi(filters) {
     return {
         user_sub: filters.userSub,
         name: filters.name,
-        created_at: filters.createdAt === null ? null : {
-            operator: filters.createdAt.operator,
-            value: filters.createdAt.value.getTime() / 1000
-        },
-        sampling_max_count: filters.samplingMaxCount
+        created_at:
+            filters.createdAt === null
+                ? null
+                : {
+                      operator: filters.createdAt.operator,
+                      value: filters.createdAt.value.getTime() / 1000,
+                  },
+        sampling_max_count: filters.samplingMaxCount,
     };
 }

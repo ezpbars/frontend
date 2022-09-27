@@ -1,34 +1,28 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <!--[TEMPLATE: ["/standard.html"]]-->
+        <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@4/swagger-ui.css" />
+        <link type="text/css" rel="stylesheet" href="/css/lib/SwaggerDark.css" />
+        <title>ezpbars - Swagger UI</title>
+    </head>
 
-<head>
-    <!--[TEMPLATE: ["/standard.html"]]-->
-    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@4/swagger-ui.css">
-    <link type="text/css" rel="stylesheet" href="/css/lib/SwaggerDark.css">
-    <title>ezpbars - Swagger UI</title>
-</head>
-
-<body>
-    <div id="swagger-ui">
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@4/swagger-ui-bundle.js"></script>
-    <!-- `SwaggerUIBundle` is now available on the page -->
-    <script type="module">
-        import { apiUrl } from "/js/fetch_helper.js";
-        const ui = SwaggerUIBundle({
-            url: apiUrl('/api/1/openapi.json'),
-            "dom_id": "#swagger-ui",
-            "layout": "BaseLayout",
-            "deepLinking": true,
-            "showExtensions": true,
-            "showCommonExtensions": true,
-            oauth2RedirectUrl: window.location.origin + '/docs/oauth2-redirect',
-            presets: [
-                SwaggerUIBundle.presets.apis,
-                SwaggerUIBundle.SwaggerUIStandalonePreset
-            ],
-        })
-    </script>
-</body>
-
+    <body>
+        <div id="swagger-ui"></div>
+        <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@4/swagger-ui-bundle.js"></script>
+        <!-- `SwaggerUIBundle` is now available on the page -->
+        <script type="module">
+            import { apiUrl } from "/js/fetch_helper.js";
+            const ui = SwaggerUIBundle({
+                url: apiUrl("/api/1/openapi.json"),
+                dom_id: "#swagger-ui",
+                layout: "BaseLayout",
+                deepLinking: true,
+                showExtensions: true,
+                showCommonExtensions: true,
+                oauth2RedirectUrl: window.location.origin + "/docs/oauth2-redirect",
+                presets: [SwaggerUIBundle.presets.apis, SwaggerUIBundle.SwaggerUIStandalonePreset],
+            });
+        </script>
+    </body>
 </html>

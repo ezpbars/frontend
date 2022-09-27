@@ -7,29 +7,29 @@ import { implementReplicaListener, ListenerOf, ReplicaListener } from "/js/lib/r
 
 export const ITERATED_TECHNIQUE_API_TO_NATIVE = {
     "best_fit.linear": "bestFit.linear",
-    "percentile": "percentile",
-    "harmonic_mean": "harmonicMean",
-    "geometric_mean": "geometricMean",
-    "arithmetic_mean": "arithemticMean"
+    percentile: "percentile",
+    harmonic_mean: "harmonicMean",
+    geometric_mean: "geometricMean",
+    arithmetic_mean: "arithemticMean",
 };
 export const ONE_OFF_TECHNIQUE_API_TO_NATIVE = {
-    "percentile": "percentile",
-    "harmonic_mean": "harmonicMean",
-    "geometric_mean": "geometricMean",
-    "arithmetic_mean": "arithmeticMean"
+    percentile: "percentile",
+    harmonic_mean: "harmonicMean",
+    geometric_mean: "geometricMean",
+    arithmetic_mean: "arithmeticMean",
 };
 export const ITERATED_TECHNIQUE_NATIVE_TO_API = {
-    "percentile": "percentile",
-    "harmonicMean": "harmonic_mean",
-    "geometricMean": "geometric_mean",
-    "arithmeticMean": "arithmetic_mean",
-    "bestFit.linear": "best_fit.linear"
+    percentile: "percentile",
+    harmonicMean: "harmonic_mean",
+    geometricMean: "geometric_mean",
+    arithmeticMean: "arithmetic_mean",
+    "bestFit.linear": "best_fit.linear",
 };
 export const ONE_OFF_TECHNIQUE_NATIVE_TO_API = {
-    "percentile": "percentile",
-    "harmonicMean": "harmonic_mean",
-    "geometricMean": "geometric_mean",
-    "arithmeticMean": "arithmetic_mean",
+    percentile: "percentile",
+    harmonicMean: "harmonic_mean",
+    geometricMean: "geometric_mean",
+    arithmeticMean: "arithmetic_mean",
 };
 
 /**
@@ -56,7 +56,19 @@ export const ONE_OFF_TECHNIQUE_NATIVE_TO_API = {
  * @param {number} kwargs.created_at when the progress bar step was created
  * @returns {ProgressBarStep} the parsed progress bar step
  */
-export function parseProgressBarStep({ user_sub, progress_bar_name, uid, name, position, iterated, one_off_technique, one_off_percentile, iterated_technique, iterated_percentile, created_at }) {
+export function parseProgressBarStep({
+    user_sub,
+    progress_bar_name,
+    uid,
+    name,
+    position,
+    iterated,
+    one_off_technique,
+    one_off_percentile,
+    iterated_technique,
+    iterated_percentile,
+    created_at,
+}) {
     // @ts-ignore
     return implementReplicaListener(
         { key: "userSub", val: user_sub },
@@ -66,11 +78,13 @@ export function parseProgressBarStep({ user_sub, progress_bar_name, uid, name, p
         { key: "position", val: position },
         { key: "iterated", val: iterated },
         {
-            key: "oneOffTechnique", val: ONE_OFF_TECHNIQUE_API_TO_NATIVE[one_off_technique]
+            key: "oneOffTechnique",
+            val: ONE_OFF_TECHNIQUE_API_TO_NATIVE[one_off_technique],
         },
         { key: "oneOffPercentile", val: one_off_percentile },
         {
-            key: "iteratedTechnique", val: ITERATED_TECHNIQUE_API_TO_NATIVE[iterated_technique]
+            key: "iteratedTechnique",
+            val: ITERATED_TECHNIQUE_API_TO_NATIVE[iterated_technique],
         },
         { key: "iteratedPercentile", val: iterated_percentile },
         // @ts-ignore

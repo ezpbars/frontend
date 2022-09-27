@@ -21,9 +21,11 @@ export class UserTokenReader {
          * @type {Observable.<import("/js/app/user_tokens/user_token_filters.js").UserTokenFilters>}
          * @readonly
          */
-        this.filters = new Observable(newUserTokenFilters({
-            expiresAt: { operator: "gtn", value: new Date() }
-        }));
+        this.filters = new Observable(
+            newUserTokenFilters({
+                expiresAt: { operator: "gtn", value: new Date() },
+            })
+        );
         /**
          * the sort for the list of items
          * @type {Observable.<import("/js/app/user_tokens/user_token_sort.js").UserTokenSort>}
@@ -68,9 +70,9 @@ export class UserTokenReader {
     /**
      * updates the items to match the result from the given filter and sort so long as
      * the request counter matches the id throughout the entire process
-     * @param {import("/js/app/user_tokens/user_token_filters.js").UserTokenFilters} filter 
+     * @param {import("/js/app/user_tokens/user_token_filters.js").UserTokenFilters} filter
      *   the filter to use
-     * @param {import("/js/app/user_tokens/user_token_sort.js").UserTokenSort} sort 
+     * @param {import("/js/app/user_tokens/user_token_sort.js").UserTokenSort} sort
      *   the sort to use
      * @param {number} limit the maxmimum number of results to load
      * @param {number} id the value of the request counter for this request
@@ -89,8 +91,8 @@ export class UserTokenReader {
                 body: JSON.stringify({
                     filters: userTokenFiltersToApi(filter),
                     sort,
-                    limit
-                })
+                    limit,
+                }),
             })
         );
         if (this.requestCounter !== id) {

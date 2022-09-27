@@ -32,33 +32,25 @@
  * sorts by name alphabetically from a to z
  * @type {UserTokenSort}
  */
-export const NAME_ALPHABETICAL_AZ = [
-    { key: "name", dir: "asc", before: null, after: null }
-];
+export const NAME_ALPHABETICAL_AZ = [{ key: "name", dir: "asc", before: null, after: null }];
 
 /**
  * sorts by name alphabetically from z to a
  * @type {UserTokenSort}
  */
-export const NAME_ALPHABETICAL_ZA = [
-    { key: "name", dir: "desc", before: null, after: null }
-];
+export const NAME_ALPHABETICAL_ZA = [{ key: "name", dir: "desc", before: null, after: null }];
 
 /**
  * sorts by when the tokens were created from oldest to newest
  * @type {UserTokenSort}
  */
-export const OLDEST_TO_NEWEST = [
-    { key: "created_at", dir: "desc", before: null, after: null }
-];
+export const OLDEST_TO_NEWEST = [{ key: "created_at", dir: "desc", before: null, after: null }];
 
 /**
  * sorts by when the tokens were created from newest to oldest
  * @type {UserTokenSort}
  */
-export const NEWEST_TO_OLDEST = [
-    { key: "created_at", dir: "asc", before: null, after: null }
-];
+export const NEWEST_TO_OLDEST = [{ key: "created_at", dir: "asc", before: null, after: null }];
 
 /**
  * sorts by when the tokens expire from soonest to latest
@@ -66,7 +58,7 @@ export const NEWEST_TO_OLDEST = [
  */
 export const EXPIRES_SOONEST_TO_LATEST = [
     { key: "expires_at", dir: "asc", before: null, after: null },
-    ...NAME_ALPHABETICAL_AZ
+    ...NAME_ALPHABETICAL_AZ,
 ];
 
 /**
@@ -75,7 +67,7 @@ export const EXPIRES_SOONEST_TO_LATEST = [
  */
 export const EXPIRES_LATEST_TO_SOONEST = [
     { key: "expires_at", dir: "desc", before: null, after: null },
-    ...NAME_ALPHABETICAL_AZ
+    ...NAME_ALPHABETICAL_AZ,
 ];
 
 /**
@@ -88,5 +80,5 @@ export const SORT_OPTIONS = [
     { name: "Date Created Newest-Oldest", val: NEWEST_TO_OLDEST },
     { name: "Date Created Oldest-Newest", val: OLDEST_TO_NEWEST },
     { name: "Expiry Date Soonest-Latest", val: EXPIRES_SOONEST_TO_LATEST },
-    { name: "Expiry Date Latest-Soonest", val: EXPIRES_LATEST_TO_SOONEST }
+    { name: "Expiry Date Latest-Soonest", val: EXPIRES_LATEST_TO_SOONEST },
 ];

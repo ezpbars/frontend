@@ -60,38 +60,45 @@ export class ResourceSection {
          * @type {function(T) : string | Node | null}
          * @readonly
          */
-        this.formatter = formatter !== undefined ? formatter : /** @param {T} o */ (o) => (o === null ? "null" : o.toString());
+        this.formatter =
+            formatter !== undefined ? formatter : /** @param {T} o */ (o) => (o === null ? "null" : o.toString());
         /**
          * if the resource should be editable, configures how it is edited
          * @type {?{fromString:?function(string):T, editingNode:?Node, editing:Observable.<boolean>}}
          * @readonly
          */
-        this.edit = edit !== undefined ? Object.assign({
-            fromString: null,
-            editingNode: (() => {
-                if (edit.editingNode !== null && edit.editingNode !== undefined) {
-                    return null;
-                }
-                const input = document.createElement("input");
-                input.classList.add("resources-section-edit-input");
-                input.type = "text";
-                this.label.addListenerAndInvoke((label) => {
-                    input.placeholder = label;
-                });;
-                data.addListenerAndInvoke(key, (val) => {
-                    const formatted = this.formatter(val);
-                    if (typeof (formatted) !== "string") {
-                        throw "uneditable format node";
-                    }
-                    input.value = formatted;
-                });
-                input.addEventListener("change", (e) => {
-                    data.set(key, this.edit.fromString(input.value));
-                });
-                return input;
-            })(),
-            editing: null
-        }, edit) : null;
+        this.edit =
+            edit !== undefined
+                ? Object.assign(
+                      {
+                          fromString: null,
+                          editingNode: (() => {
+                              if (edit.editingNode !== null && edit.editingNode !== undefined) {
+                                  return null;
+                              }
+                              const input = document.createElement("input");
+                              input.classList.add("resources-section-edit-input");
+                              input.type = "text";
+                              this.label.addListenerAndInvoke((label) => {
+                                  input.placeholder = label;
+                              });
+                              data.addListenerAndInvoke(key, (val) => {
+                                  const formatted = this.formatter(val);
+                                  if (typeof formatted !== "string") {
+                                      throw "uneditable format node";
+                                  }
+                                  input.value = formatted;
+                              });
+                              input.addEventListener("change", (e) => {
+                                  data.set(key, this.edit.fromString(input.value));
+                              });
+                              return input;
+                          })(),
+                          editing: null,
+                      },
+                      edit
+                  )
+                : null;
         this.render();
     }
     /**
@@ -101,59 +108,76 @@ export class ResourceSection {
      */
     render() {
         this.element.classList.add("resources-section");
-        this.element.appendChild((() => {
-            const collapse = new Collapse((() => {
-                const section = document.createElement("div");
-                section.classList.add("resources-section-inner");
-                section.appendChild((() => {
-                    const resourcesKey = document.createElement("div");
-                    resourcesKey.classList.add("resources-key");
-                    this.label.addListenerAndInvoke((label) => {
-                        resourcesKey.textContent = label;
-                    });
-                    return resourcesKey;
-                })());
-                section.appendChild((() => {
-                    const valueCollapse = new Collapse((() => {
-                        const resourcesValue = document.createElement("div");
-                        resourcesValue.classList.add("resources-value");
-                        this.data.addListenerAndInvoke(this.key, (t) => {
-                            const formatted = this.formatter(t);
-                            if (formatted === null) {
-                                resourcesValue.textContent = "";
-                            } else if (typeof (formatted) === "string") {
-                                resourcesValue.textContent = formatted;
-                            } else {
-                                resourcesValue.textContent = "";
-                                resourcesValue.appendChild(formatted);
-                            }
-                        });
-                        return resourcesValue;
-                    })(), { visible: this.edit === null || !this.edit.editing.value });
-                    if (this.edit !== null) {
-                        this.edit.editing.addListener((editing) => {
-                            valueCollapse.visible.value = !editing;
-                        });
-                    }
-                    return valueCollapse.element;
-                })());
-                if (this.edit !== null) {
-                    section.appendChild((() => {
-                        const inputCollapse = new Collapse((() => {
-                            const div = document.createElement("div");
-                            div.classList.add("resources-section-edit-container");
-                            div.appendChild(this.edit.editingNode);
-                            return div;
-                        })(), { visible: this.edit.editing.value });
-                        this.edit.editing.addListener(((editing) => {
-                            inputCollapse.visible.value = editing;
-                        }));
-                        return inputCollapse.element;
-                    })());
-                }
-                return section;
-            })(), { visible: this.formatter(this.data.get(this.key)) !== null });
-            return collapse.element;
-        })());
+        this.element.appendChild(
+            (() => {
+                const collapse = new Collapse(
+                    (() => {
+                        const section = document.createElement("div");
+                        section.classList.add("resources-section-inner");
+                        section.appendChild(
+                            (() => {
+                                const resourcesKey = document.createElement("div");
+                                resourcesKey.classList.add("resources-key");
+                                this.label.addListenerAndInvoke((label) => {
+                                    resourcesKey.textContent = label;
+                                });
+                                return resourcesKey;
+                            })()
+                        );
+                        section.appendChild(
+                            (() => {
+                                const valueCollapse = new Collapse(
+                                    (() => {
+                                        const resourcesValue = document.createElement("div");
+                                        resourcesValue.classList.add("resources-value");
+                                        this.data.addListenerAndInvoke(this.key, (t) => {
+                                            const formatted = this.formatter(t);
+                                            if (formatted === null) {
+                                                resourcesValue.textContent = "";
+                                            } else if (typeof formatted === "string") {
+                                                resourcesValue.textContent = formatted;
+                                            } else {
+                                                resourcesValue.textContent = "";
+                                                resourcesValue.appendChild(formatted);
+                                            }
+                                        });
+                                        return resourcesValue;
+                                    })(),
+                                    { visible: this.edit === null || !this.edit.editing.value }
+                                );
+                                if (this.edit !== null) {
+                                    this.edit.editing.addListener((editing) => {
+                                        valueCollapse.visible.value = !editing;
+                                    });
+                                }
+                                return valueCollapse.element;
+                            })()
+                        );
+                        if (this.edit !== null) {
+                            section.appendChild(
+                                (() => {
+                                    const inputCollapse = new Collapse(
+                                        (() => {
+                                            const div = document.createElement("div");
+                                            div.classList.add("resources-section-edit-container");
+                                            div.appendChild(this.edit.editingNode);
+                                            return div;
+                                        })(),
+                                        { visible: this.edit.editing.value }
+                                    );
+                                    this.edit.editing.addListener((editing) => {
+                                        inputCollapse.visible.value = editing;
+                                    });
+                                    return inputCollapse.element;
+                                })()
+                            );
+                        }
+                        return section;
+                    })(),
+                    { visible: this.formatter(this.data.get(this.key)) !== null }
+                );
+                return collapse.element;
+            })()
+        );
     }
 }

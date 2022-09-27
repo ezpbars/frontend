@@ -36,17 +36,22 @@ export class Items {
     render() {
         this.element.classList.add("resources-items");
 
-        this.items.addArrayListenerAndInvoke(simpleArrayListener({
-            insert: (idx, val) => {
-                if (idx === 0) {
-                    this.element.insertAdjacentElement("afterbegin", val.element);
-                } else {
-                    this.element.children[idx - 1].insertAdjacentElement("afterend", val.element);
-                }
-            },
-            remove: (idx) => {
-                this.element.children[idx].remove();
-            }
-        }, { thisArg: this }));
+        this.items.addArrayListenerAndInvoke(
+            simpleArrayListener(
+                {
+                    insert: (idx, val) => {
+                        if (idx === 0) {
+                            this.element.insertAdjacentElement("afterbegin", val.element);
+                        } else {
+                            this.element.children[idx - 1].insertAdjacentElement("afterend", val.element);
+                        }
+                    },
+                    remove: (idx) => {
+                        this.element.children[idx].remove();
+                    },
+                },
+                { thisArg: this }
+            )
+        );
     }
 }

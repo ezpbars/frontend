@@ -30,15 +30,21 @@ export class UserTokensController {
          * @readonly
          */
         this.itemsView = new PageableItems({ onMore: this.reader.loadNext.bind(this.reader) });
-        this.reader.items.addArrayListenerAndInvoke(simpleArrayListener({
-            insert: (index, userToken) => {
-                const replica = userToken.createReplica();
-                this.itemsView.items.items.splice(index, 0, new UserTokenView(replica, this.onDelete.bind(this, replica)));
-            },
-            remove: (index) => {
-                this.itemsView.items.items.splice(index, 1)[0].userToken.detach();
-            }
-        }));
+        this.reader.items.addArrayListenerAndInvoke(
+            simpleArrayListener({
+                insert: (index, userToken) => {
+                    const replica = userToken.createReplica();
+                    this.itemsView.items.items.splice(
+                        index,
+                        0,
+                        new UserTokenView(replica, this.onDelete.bind(this, replica))
+                    );
+                },
+                remove: (index) => {
+                    this.itemsView.items.items.splice(index, 1)[0].userToken.detach();
+                },
+            })
+        );
         this.reader.hasNextPage.addListenerAndInvoke((hasNext) => {
             this.itemsView.hasMore.value = hasNext;
         });

@@ -1,7 +1,7 @@
 import { implementReplicaListener, ListenerOf, ReplicaListener } from "/js/lib/replica_listener.js";
 /**
  * a user token acts as a shared secret for server to server authentication
- * @typedef {ReplicaListener & ListenerOf.<string, "uid"> & ListenerOf.<?string, "token"> & ListenerOf.<string, "name"> & ListenerOf.<Date, "createdAt"> & ListenerOf.<?Date, "expiresAt">} UserToken 
+ * @typedef {ReplicaListener & ListenerOf.<string, "uid"> & ListenerOf.<?string, "token"> & ListenerOf.<string, "name"> & ListenerOf.<Date, "createdAt"> & ListenerOf.<?Date, "expiresAt">} UserToken
  */
 
 /**
@@ -17,9 +17,9 @@ import { implementReplicaListener, ListenerOf, ReplicaListener } from "/js/lib/r
 export function parseUserToken({ uid, token = undefined, name, created_at, expires_at = undefined }) {
     return implementReplicaListener(
         { key: "uid", val: uid },
-        { key: "token", val: (token === undefined ? null : token) },
+        { key: "token", val: token === undefined ? null : token },
         { key: "name", val: name },
         { key: "createdAt", val: new Date(created_at * 1000) },
-        { key: "expiresAt", val: (expires_at === undefined || expires_at === null) ? null : new Date(expires_at * 1000) }
+        { key: "expiresAt", val: expires_at === undefined || expires_at === null ? null : new Date(expires_at * 1000) }
     );
 }

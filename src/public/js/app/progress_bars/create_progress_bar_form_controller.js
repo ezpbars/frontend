@@ -4,10 +4,9 @@ import { AuthHelper } from "/js/auth_helper.js";
 import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 
-
 export class CreateProgressBarFormController {
     /**
-     * 
+     *
      * @param {function(import("/js/app/progress_bars/progress_bar.js").ProgressBar) : any} onCreated the function to call when the form is submitted
      */
     constructor(onCreated) {
@@ -32,39 +31,46 @@ export class CreateProgressBarFormController {
     render() {
         this.element.textContent = "";
         this.element.classList.add("elevation-medium");
-        this.element.appendChild((() => {
-            const form = document.createElement("form");
-            form.classList.add("progress-bar-create-form");
-            const name = new Observable("");
-            form.appendChild((() => {
-                const formGroup = new FormGroup((() => {
-                    const input = document.createElement("input");
-                    input.type = "text";
-                    input.name = "name";
-                    input.id = "progress-bar-create-form-name";
-                    input.setAttribute("required", "");
-                    name.addListenerAndInvoke((name) => {
-                        input.value = name;
-                    });
-                    input.addEventListener("change", (e) => {
-                        name.value = input.value;
-                    });
-                    return input;
-                })(), "name");
-                return formGroup.element;
-            })());
-            const disabled = new Observable(false);
-            form.appendChild((() => {
-                const btn = document.createElement("button");
-                disabled.addListenerAndInvoke((d) => {
-                    btn.disabled = d;
-                });
-                btn.type = "submit";
-                btn.textContent = "Submit";
-                return btn;
-            })());
-            form.addEventListener("submit", (
-                async (event) => {
+        this.element.appendChild(
+            (() => {
+                const form = document.createElement("form");
+                form.classList.add("progress-bar-create-form");
+                const name = new Observable("");
+                form.appendChild(
+                    (() => {
+                        const formGroup = new FormGroup(
+                            (() => {
+                                const input = document.createElement("input");
+                                input.type = "text";
+                                input.name = "name";
+                                input.id = "progress-bar-create-form-name";
+                                input.setAttribute("required", "");
+                                name.addListenerAndInvoke((name) => {
+                                    input.value = name;
+                                });
+                                input.addEventListener("change", (e) => {
+                                    name.value = input.value;
+                                });
+                                return input;
+                            })(),
+                            "name"
+                        );
+                        return formGroup.element;
+                    })()
+                );
+                const disabled = new Observable(false);
+                form.appendChild(
+                    (() => {
+                        const btn = document.createElement("button");
+                        disabled.addListenerAndInvoke((d) => {
+                            btn.disabled = d;
+                        });
+                        btn.type = "submit";
+                        btn.textContent = "Submit";
+                        return btn;
+                    })()
+                );
+                form.addEventListener("submit", async (event) => {
                     event.preventDefault();
                     disabled.value = true;
                     try {
@@ -73,11 +79,11 @@ export class CreateProgressBarFormController {
                             AuthHelper.auth({
                                 method: "POST",
                                 headers: {
-                                    "content-type": "application/json; charset=utf-8"
+                                    "content-type": "application/json; charset=utf-8",
                                 },
                                 body: JSON.stringify({
                                     name: name.value,
-                                })
+                                }),
                             })
                         );
                         if (!response.ok) {
@@ -88,9 +94,9 @@ export class CreateProgressBarFormController {
                     } finally {
                         disabled.value = false;
                     }
-                }
-            ));
-            return form;
-        })());
+                });
+                return form;
+            })()
+        );
     }
 }

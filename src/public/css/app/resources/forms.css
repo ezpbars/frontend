@@ -17,10 +17,12 @@
 .resources-form-group label {
     /*! PREPROCESSOR: import .text-label-1 FROM /css/typography.css */
 }
-.resources-form-group input, .resources-form-group select {
+.resources-form-group input,
+.resources-form-group select {
     /*! PREPROCESSOR: import .text-body-1 FROM /css/typography.css */
 }
-.resources-form-help, .resources-form-error {
+.resources-form-help,
+.resources-form-error {
     /*! PREPROCESSOR: import .text-body-2 FROM /css/typography.css */
 }
 /* #endregion */

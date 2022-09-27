@@ -15,4 +15,4 @@
  */
 
 // We need to export something for visual code to consider this a module :/
-export function foo() { } // @@type-hint
+export function foo() {} // @@type-hint
