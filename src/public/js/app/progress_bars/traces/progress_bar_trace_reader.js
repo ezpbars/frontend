@@ -1,48 +1,33 @@
-import { parseProgressBarStep } from "/js/app/progress_bars/steps/progress_bar_step.js";
+import { parseProgressBarTrace } from "/js/app/progress_bars/traces/progress_bar_trace.js";
 import {
-    newProgressBarStepFilters,
-    progressBarStepFiltersToApi,
-} from "/js/app/progress_bars/steps/progress_bar_step_filters.js";
-import { PBAR_NAME_ALPHABETICAL_AZ } from "/js/app/progress_bars/steps/progress_bar_step_sort.js";
+    newProgressBarTraceFilters,
+    progressBarTraceFiltersToApi,
+} from "/js/app/progress_bars/traces/progress_bar_trace_filters.js";
+import { NEWEST_TO_OLDEST } from "/js/app/progress_bars/traces/progress_bar_trace_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
-import { debounce } from "/js/debounce.js";
 import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js";
 
 /**
- * loads progress bar steps matching the given filters and sorts with the option
- * to get the next page; automatically resets if the filters or sorts change
+ * loads progress bar traces matching the given filters and sorts with the option to
+ * get the next page; automatically resets if the filters or sorts change
  */
-export class ProgressBarStepReader {
-    /**
-     * creates a new reader with the default filter and sorts
-     * @param {object} [kwargs] keyword arguments
-     * @param {number} [kwargs.debounceMs=1] the number of milliseconds to debounce
-     *   reload requests; null to disable debouncing (runs synchronously), 0 to
-     *   run as soon as js yields, higher numbers to delay
-     */
-    constructor(kwargs) {
-        kwargs = Object.assign({ debounceMs: 1 }, kwargs);
-        /**
-         * the number of milliseconds to debounce reload requests; null to disable debouncing
-         * @type {number}
-         * @readonly
-         */
-        this.debounceMs = kwargs.debounceMs;
+export class ProgressBarTraceReader {
+    constructor() {
         /**
          * the filters for the list of items
-         * @type {Observable.<import("/js/app/progress_bars/steps/progress_bar_step_filters.js").ProgressBarStepFilters>}
+         * @type {Observable.<import("/js/app/progress_bars/traces/progress_bar_trace_filters.js").ProgressBarTraceFilters>}
          * @readonly
          */
-        this.filters = new Observable(newProgressBarStepFilters({}));
+        this.filters = new Observable(newProgressBarTraceFilters({}));
         /**
          * the sort for the list of items
-         * @type {Observable.<import("/js/app/progress_bars/steps/progress_bar_step_sort.js").ProgressBarStepSort>}
+         * @type {Observable.<import("/js/app/progress_bars/traces/progress_bar_trace_sort.js").ProgressBarTraceSort>}
          * @readonly
          */
-        this.sort = new Observable(PBAR_NAME_ALPHABETICAL_AZ);
+        this.sort = new Observable(NEWEST_TO_OLDEST);
         /**
          * the maximum number of items to load at a time
          * @type {Observable.<number>}
@@ -51,13 +36,13 @@ export class ProgressBarStepReader {
         this.limit = new Observable(10);
         /**
          * the actual list of items
-         * @type {ArrayListenerOf.<import("/js/app/progress_bars/steps/progress_bar_step.js").ProgressBarStep>}
+         * @type {ArrayListenerOf.<import("/js/app/progress_bars/traces/progress_bar_trace.js").ProgressBarTrace>}
          * @readonly
          */
         this.items = newArrayListenerOf([]);
         /**
          * the sort for pagination if we've loaded a page and there is either a next or previous page
-         * @type {import("/js/app/progress_bars/steps/progress_bar_step_sort.js").ProgressBarStepSort}
+         * @type {import("/js/app/progress_bars/traces/progress_bar_trace_sort.js").ProgressBarTraceSort}
          * @private
          */
         this.nextPageSort = null;
@@ -74,34 +59,31 @@ export class ProgressBarStepReader {
          * @private
          */
         this.requestCounter = 0;
-        const reloadAfterDebounce = debounce(this.reload.bind(this), this.debounceMs);
-        this.filters.addListener(reloadAfterDebounce);
-        this.sort.addListener(reloadAfterDebounce);
-        reloadAfterDebounce();
+        this.filters.addListener(this.reload.bind(this));
+        this.sort.addListener(this.reload.bind(this));
+        this.reload();
     }
     /**
-     * updates the items to match the result from the given filter and sort so long as
+     * updates the items to match the result form the given fitler and sort so long as
      * the request counter matches the id throughout the entire process
-     * @param {import("/js/app/progress_bars/steps/progress_bar_step_filters.js").ProgressBarStepFilters} filter
+     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_filters.js").ProgressBarTraceFilters} filter
      *   the filter to use
-     * @param {import("/js/app/progress_bars/steps/progress_bar_step_sort.js").ProgressBarStepSort} sort
-     *   the sort to use
+     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_sort.js").ProgressBarTraceSort} sort the sort to use
      * @param {number} limit the maximum number of results to load
      * @param {number} id the value of the request counter for this request
-     * @returns {Promise.<Array.<import("/js/app/progress_bars/steps/progress_bar_step.js").ProgressBarStep>>} a promise which resolves when the request is complete or is aborted
-     * @private
+     * @returns {Promise.<Array.<import("/js/app/progress_bars/traces/progress_bar_trace.js").ProgressBarTrace>>} a promise which resolves when the request is complete or is aborted
      */
     async load(filter, sort, limit, id) {
         if (this.requestCounter !== id) {
             return;
         }
         const response = await fetch(
-            apiUrl("/api/1/progress_bars/steps/search"),
+            apiUrl("/api/1/progress_bars/traces/search"),
             AuthHelper.auth({
                 method: "POST",
                 headers: { "content-type": "application/json; charset=UTF-8" },
                 body: JSON.stringify({
-                    filters: progressBarStepFiltersToApi(filter),
+                    filters: progressBarTraceFiltersToApi(filter),
                     sort,
                     limit,
                 }),
@@ -120,17 +102,18 @@ export class ProgressBarStepReader {
         this.nextPageSort = data.next_page_sort;
         this.hasNextPage.value = sortHasAfter(data.next_page_sort);
         /**
-         * @type {Array.<import("/js/app/progress_bars/steps/progress_bar_step.js").ProgressBarStep>}
+         * @type {Array.<import("/js/app/progress_bars/traces/progress_bar_trace.js").ProgressBarTrace>}
          */
         let newItems = [];
         for (let item of data.items) {
-            newItems.push(parseProgressBarStep(item));
+            newItems.push(parseProgressBarTrace(item));
         }
         return newItems;
     }
+
     /**
-     * loads the first page matching the current sort filters
-     * @returns {Promise.<any>} resolves when the request is completed or aborted
+     * loads the first page matching the current sort and filters
+     * @returns {Promise.<any>} resolves when the request is complete or aborted
      */
     async reload() {
         const id = ++this.requestCounter;
@@ -142,7 +125,7 @@ export class ProgressBarStepReader {
 
     /**
      * loads the next page; returns a rejected promise if there is no next page
-     * @returns {Promise.<any>} resolves when the request is completed or aborted
+     * @returns {Promise.<any>} resolves when the request is complete or aborted
      */
     async loadNext() {
         const id = ++this.requestCounter;

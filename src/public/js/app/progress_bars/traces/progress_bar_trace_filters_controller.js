@@ -1,15 +1,18 @@
 import { ProgressBarReader } from "/js/app/progress_bars/progress_bar_reader.js";
-import { SORT_OPTIONS } from "/js/app/progress_bars/steps/progress_bar_step_sort.js";
+import { SORT_OPTIONS } from "/js/app/progress_bars/traces/progress_bar_trace_sort.js";
 import { FormGroup } from "/js/app/resources/form_group.js";
 import { SearchController } from "/js/app/resources/search_controller.js";
 import { Observable } from "/js/lib/observable.js";
 
-export class ProgressBarStepFiltersController {
+/**
+ * responsible for showing and allowing the user to edit the progress bar trace filters and sort
+ */
+export class ProgressBarTraceFiltersController {
     /**
      *
-     * @param {import("/js/app/progress_bars/steps/progress_bar_step_filters.js").ProgressBarStepFilters} filters
+     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_filters.js").ProgressBarTraceFilters} filters
      *   the filters to show and allow editing of
-     * @param {import("/js/app/progress_bars/steps/progress_bar_step_sort.js").ProgressBarStepSort} sort
+     * @param {import("/js/app/progress_bars/traces/progress_bar_trace_sort.js").ProgressBarTraceSort} sort
      *   the sort to show and allow editing of
      */
     constructor(filters, sort) {
@@ -21,24 +24,25 @@ export class ProgressBarStepFiltersController {
         this.element = document.createElement("div");
         /**
          * the filters to show and allow editing of
-         * @type {Observable.<import("/js/app/progress_bars/steps/progress_bar_step_filters.js").ProgressBarStepFilters>}
+         * @type {Observable.<import("/js/app/progress_bars/traces/progress_bar_trace_filters.js").ProgressBarTraceFilters>}
+         * @readonly
          */
         this.filters = new Observable(filters);
         /**
          * the sort to show and allow editing of
-         * @type {Observable.<import("/js/app/progress_bars/steps/progress_bar_step_sort.js").ProgressBarStepSort>}
+         *  @type {Observable.<import("/js/app/progress_bars/traces/progress_bar_trace_sort.js").ProgressBarTraceSort>}
          * @readonly
          */
         this.sort = new Observable(sort);
         this.render();
     }
     /**
-     * Adds the appropriate contents to the element for this view. Should
+     * adds the appropriate contents to the element for thsi view. Should
      * only be called once
      * @private
      */
     render() {
-        this.element.classList.add("progress-bar-step-filters-controller", "elevation-medium");
+        this.element.classList.add("progress-bar-trace-filters-controller", "elevation-medium");
         this.element.appendChild(
             new FormGroup(
                 (() => {
@@ -50,12 +54,14 @@ export class ProgressBarStepFiltersController {
                     );
                     searchController.value.addListener((progressBar) => {
                         if (progressBar !== null) {
-                            this.filters.value = Object.assign({}, this.filters.value, {
-                                progressBarName: {
-                                    operator: "eq",
-                                    value: progressBar.get("name"),
-                                },
-                            });
+                            if (
+                                this.filters.value.progressBarName === null ||
+                                this.filters.value.progressBarName.value !== progressBar.get("name")
+                            ) {
+                                this.filters.value = Object.assign({}, this.filters.value, {
+                                    progressBarName: { operator: "eq", value: progressBar.get("name") },
+                                });
+                            }
                         } else if (this.filters.value.progressBarName !== null) {
                             this.filters.value = Object.assign({}, this.filters.value, {
                                 progressBarName: null,
@@ -65,35 +71,6 @@ export class ProgressBarStepFiltersController {
                     return searchController.element;
                 })(),
                 "Progress Bar"
-            ).element
-        );
-        this.element.appendChild(
-            new FormGroup(
-                (() => {
-                    const input = document.createElement("input");
-                    input.type = "text";
-                    const handleChange = () => {
-                        if (input.value !== "") {
-                            this.filters.value = Object.assign({}, this.filters.value, {
-                                name: {
-                                    operator: "ilike",
-                                    value: `%${input.value
-                                        .replace("\\", "\\\\")
-                                        .replace("%", "\\%")
-                                        .replace("_", "\\_")}%`,
-                                },
-                            });
-                        } else {
-                            this.filters.value = Object.assign({}, this.filters.value, {
-                                name: null,
-                            });
-                        }
-                    };
-                    input.addEventListener("change", handleChange);
-                    input.addEventListener("keyup", handleChange);
-                    return input;
-                })(),
-                "Name"
             ).element
         );
         this.element.appendChild(
