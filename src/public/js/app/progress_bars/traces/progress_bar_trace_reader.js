@@ -105,7 +105,7 @@ export class ProgressBarTraceReader {
     }
 
     /**
-     * loads teh first page matching the current sort and filters
+     * loads the first page matching the current sort and filters
      * @returns {Promise.<any>} resolves when the request is complete or aborted
      */
     async reload() {
