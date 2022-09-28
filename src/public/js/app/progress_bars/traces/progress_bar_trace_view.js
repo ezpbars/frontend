@@ -61,9 +61,22 @@ export class ProgressBarTraceView {
     render() {
         this.element.classList.add("progress-bar-trace-view", "elevation-medium");
         this.element.appendChild(
-            new Controls({
-                onDelete: this._onDelete.bind(this),
-            }).element
+            (() => {
+                const controls = new Controls({
+                    onDelete: this._onDelete.bind(this),
+                    contextMenu: {},
+                });
+                this.progressBarTrace.addListenerAndInvoke("progressBarName", (name) => {
+                    controls.contextMenu.value = {
+                        "Go to Progress Bar":
+                            "/app/progress_bars.html?" +
+                            new URLSearchParams({
+                                "progress-bar": btoa(new URLSearchParams({ nameExact: name }).toString()),
+                            }).toString(),
+                    };
+                });
+                return controls.element;
+            })()
         );
         this.element.appendChild(
             (() => {

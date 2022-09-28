@@ -1,4 +1,5 @@
 import { Collapse } from "/js/app/resources/collapse.js";
+import { Controls } from "/js/app/resources/controls.js";
 import { DumbResourceSection } from "/js/app/resources/dumb_resource_section.js";
 import { ResourceSection } from "/js/app/resources/resource_section.js";
 import { ListenerOf, ReplicaListener } from "/js/lib/replica_listener.js";
@@ -35,6 +36,28 @@ export class ProgressBarTraceStepView {
      */
     render() {
         this.element.classList.add("progress-bar-trace-step-view", "elevation-medium");
+        this.element.appendChild(
+            (() => {
+                const controls = new Controls({
+                    contextMenu: {},
+                });
+                this.progressBarTraceStep.addListenerAndInvoke("progressBarName", (name) => {
+                    controls.contextMenu.value = {
+                        "Go to trace":
+                            "/app/progress_bar_traces.html?" +
+                            new URLSearchParams({
+                                "progress-bar-trace": btoa(new URLSearchParams({ pbarName: name }).toString()),
+                            }).toString(),
+                        "Go to Progress Bar":
+                            "/app/progress_bars.html?" +
+                            new URLSearchParams({
+                                "progress-bar": btoa(new URLSearchParams({ nameExact: name }).toString()),
+                            }).toString(),
+                    };
+                });
+                return controls.element;
+            })()
+        );
         this.element.appendChild(
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<string, "userSub">} */

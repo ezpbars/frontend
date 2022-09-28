@@ -123,11 +123,24 @@ export class ProgressBarStepView {
     render() {
         this.element.classList.add("progress-bar-step-view", "elevation-medium");
         this.element.appendChild(
-            new Controls({
-                onDelete: this.progressBarStep.get("name") === "default" ? null : this._onDelete.bind(this),
-                onEdit: this.progressBarStep.get("name") === "default" ? null : this._onEdit.bind(this),
-                editing: this.editing,
-            }).element
+            (() => {
+                const controls = new Controls({
+                    onDelete: this.progressBarStep.get("name") === "default" ? null : this._onDelete.bind(this),
+                    onEdit: this.progressBarStep.get("name") === "default" ? null : this._onEdit.bind(this),
+                    contextMenu: {},
+                    editing: this.editing,
+                });
+                this.progressBarStep.addListenerAndInvoke("progressBarName", (name) => {
+                    controls.contextMenu.value = {
+                        "Go to Progress Bar":
+                            "/app/progress_bars.html?" +
+                            new URLSearchParams({
+                                "progress-bar": btoa(new URLSearchParams({ nameExact: name }).toString()),
+                            }).toString(),
+                    };
+                });
+                return controls.element;
+            })()
         );
         this.element.appendChild(
             (() => {

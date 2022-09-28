@@ -27,6 +27,7 @@ export class ProgressBarReader {
          */
         this.persister = PERSISTERS[kwargs.persist];
         const initialState = this.persister.retrieve("progress-bar", {
+            nameExact: null,
             sort: "0",
         });
         /**
@@ -34,7 +35,11 @@ export class ProgressBarReader {
          * @type {Observable.<import("/js/app/progress_bars/progress_bar_filters.js").ProgressBarFilters>}
          * @readonly
          */
-        this.filters = new Observable(newProgressBarFilters({}));
+        this.filters = new Observable(
+            newProgressBarFilters({
+                name: initialState.nameExact === null ? null : { operator: "eq", value: initialState.nameExact },
+            })
+        );
         /**
          * the sort for the list of items
          * @type {Observable.<import("/js/app/progress_bars/progress_bar_sort.js").ProgressBarSort>}
@@ -156,6 +161,7 @@ export class ProgressBarReader {
      */
     persist() {
         this.persister.store("progress-bar", {
+            nameExact: this.filters.value.name === null ? null : this.filters.value.name.value,
             sort: SORT_OPTIONS.findIndex((option) => option.val === this.sort.value).toString(),
         });
     }
