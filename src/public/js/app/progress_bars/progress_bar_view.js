@@ -117,12 +117,31 @@ export class ProgressBarView {
     render() {
         this.element.classList.add("progress-bar-view", "elevation-medium");
         this.element.appendChild(
-            new Controls({
-                onDelete: this._onDelete.bind(this),
-                onEdit: this._onEdit.bind(this),
-                editing: this.editing,
-            }).element
+            (() => {
+                const controls = new Controls({
+                    onDelete: this._onDelete.bind(this),
+                    onEdit: this._onEdit.bind(this),
+                    contextMenu: {},
+                    editing: this.editing,
+                });
+                this.progressBar.addListenerAndInvoke("name", (name) => {
+                    controls.contextMenu.value = {
+                        "Go to steps":
+                            "/app/progress_bar_steps.html?" +
+                            new URLSearchParams({
+                                "progress-bar-step": btoa(new URLSearchParams({ pbarName: name }).toString()),
+                            }).toString(),
+                        "Go to traces":
+                            "/app/progress_bar_traces.html?" +
+                            new URLSearchParams({
+                                "progress-bar-trace": btoa(new URLSearchParams({ pbarName: name }).toString()),
+                            }).toString(),
+                    };
+                });
+                return controls.element;
+            })()
         );
+
         this.element.appendChild(
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<string, "uid">} */
