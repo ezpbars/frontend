@@ -1,11 +1,12 @@
 import { parseProgressBar } from "/js/app/progress_bars/progress_bar.js";
 import { newProgressBarFilters, progressBarFiltersToApi } from "/js/app/progress_bars/progress_bar_filters.js";
-import { NAME_ALPHABETICAL_AZ } from "/js/app/progress_bars/progress_bar_sort.js";
+import { NAME_ALPHABETICAL_AZ, SORT_OPTIONS } from "/js/app/progress_bars/progress_bar_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
 import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js";
+import { PERSISTERS } from "/js/persist_utils.js";
 
 /**
  * loads progress bars matching the given filters and sorts with the option to
@@ -14,8 +15,20 @@ import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js
 export class ProgressBarReader {
     /**
      * creates a new reader with the default filter and sorts
+     * @param {object} [kwargs] the keyword arguments
+     * @param {"query" | "notPersisted"} [kwargs.persist="notPersisted"] if set, where to persist the reader's state
      */
-    constructor() {
+    constructor(kwargs) {
+        kwargs = Object.assign({ persist: "notPersisted" }, kwargs);
+        /**
+         * the persister for the state
+         * @type {import("/js/persist_utils.js").Persister}
+         * @private
+         */
+        this.persister = PERSISTERS[kwargs.persist];
+        const initialState = this.persister.retrieve("progress-bar", {
+            sort: "0",
+        });
         /**
          * the filters for the list of items
          * @type {Observable.<import("/js/app/progress_bars/progress_bar_filters.js").ProgressBarFilters>}
@@ -27,7 +40,7 @@ export class ProgressBarReader {
          * @type {Observable.<import("/js/app/progress_bars/progress_bar_sort.js").ProgressBarSort>}
          * @readonly
          */
-        this.sort = new Observable(NAME_ALPHABETICAL_AZ);
+        this.sort = new Observable(SORT_OPTIONS[parseInt(initialState.sort)].val);
         /**
          * the maximum number of items to load at a time
          * @type {Observable.<number>}
@@ -61,6 +74,8 @@ export class ProgressBarReader {
         this.requestCounter = 0;
         this.filters.addListener(this.reload.bind(this));
         this.sort.addListener(this.reload.bind(this));
+        this.filters.addListener(this.persist.bind(this));
+        this.sort.addListener(this.persist.bind(this));
         this.reload();
     }
     /**
@@ -134,5 +149,14 @@ export class ProgressBarReader {
         if (items !== undefined && items !== null) {
             this.items.splice(this.items.get().length, 0, ...items);
         }
+    }
+    /**
+     * persists the current state of the reader
+     * @private
+     */
+    persist() {
+        this.persister.store("progress-bar", {
+            sort: SORT_OPTIONS.findIndex((option) => option.val === this.sort.value).toString(),
+        });
     }
 }

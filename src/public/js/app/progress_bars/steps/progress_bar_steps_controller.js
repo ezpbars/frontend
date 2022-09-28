@@ -19,7 +19,7 @@ export class ProgressBarStepsController {
          * @type {ProgressBarStepReader}
          * @readonly
          */
-        this.reader = new ProgressBarStepReader();
+        this.reader = new ProgressBarStepReader({ persist: "query" });
         /**
          * the view for the items
          * @type {PageableItems.<ProgressBarStepView>}

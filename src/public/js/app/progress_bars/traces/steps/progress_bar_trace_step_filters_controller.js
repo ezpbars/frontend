@@ -1,10 +1,14 @@
+import { parseProgressBar } from "/js/app/progress_bars/progress_bar.js";
 import { ProgressBarReader } from "/js/app/progress_bars/progress_bar_reader.js";
+import { parseProgressBarStep } from "/js/app/progress_bars/steps/progress_bar_step.js";
 import { ProgressBarStepReader } from "/js/app/progress_bars/steps/progress_bar_step_reader.js";
 import { POSITION_LAST_TO_FIRST } from "/js/app/progress_bars/steps/progress_bar_step_sort.js";
 import { Collapse } from "/js/app/resources/collapse.js";
 import { FormGroup } from "/js/app/resources/form_group.js";
 import { SearchController } from "/js/app/resources/search_controller.js";
+import { AuthHelper } from "/js/auth_helper.js";
 import { fromDateTimeLocalInputToDate } from "/js/date_utils.js";
+import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 import { simpleArrayListener } from "/js/lib/replica_listener.js";
 import { shallowCompare } from "/js/object_utils.js";
@@ -60,16 +64,57 @@ export class ProgressBarTraceStepFiltersController {
                     );
                     searchController.value.addListener((progressBar) => {
                         if (progressBar !== null) {
-                            this.filters.value = Object.assign({}, this.filters.value, {
-                                progressBarName: {
-                                    operator: "eq",
-                                    value: progressBar.get("name"),
-                                },
-                            });
+                            if (
+                                this.filters.value.progressBarName === null ||
+                                this.filters.value.progressBarName.value !== progressBar.get("name")
+                            ) {
+                                this.filters.value = Object.assign({}, this.filters.value, {
+                                    progressBarName: {
+                                        operator: "eq",
+                                        value: progressBar.get("name"),
+                                    },
+                                });
+                            }
                         } else if (this.filters.value.progressBarName !== null) {
                             this.filters.value = Object.assign({}, this.filters.value, {
                                 progressBarName: null,
                             });
+                        }
+                    });
+                    let requestCounter = 0;
+                    this.filters.addListenerAndInvoke(async (filters) => {
+                        if (filters.progressBarName !== null) {
+                            if (
+                                searchController.value.value === null ||
+                                searchController.value.value.get("name") !== filters.progressBarName.value
+                            ) {
+                                const currentRequest = ++requestCounter;
+                                const response = await fetch(
+                                    apiUrl("/api/1/progress_bars/search"),
+                                    AuthHelper.auth({
+                                        method: "POST",
+                                        headers: { "content-type": "application/json; charset=UTF-8" },
+                                        body: JSON.stringify({
+                                            filters: { name: filters.progressBarName },
+                                            limit: 1,
+                                        }),
+                                    })
+                                );
+                                if (currentRequest !== requestCounter) {
+                                    return;
+                                }
+                                if (!response.ok) {
+                                    throw response;
+                                }
+                                const json = await response.json();
+                                if (json.items.length === 0) {
+                                    return;
+                                }
+                                if (currentRequest !== requestCounter) {
+                                    return;
+                                }
+                                searchController.value.value = parseProgressBar(json.items[0]);
+                            }
                         }
                     });
                     return searchController.element;
@@ -114,7 +159,7 @@ export class ProgressBarTraceStepFiltersController {
                                     });
                                 }
                             });
-                            this.filters.addListener((filters) => {
+                            this.filters.addListenerAndInvoke((filters) => {
                                 if (filters.progressBarName === null) {
                                     if (reader.filters.value.progressBarName !== null) {
                                         reader.filters.value = Object.assign({}, reader.filters.value, {
@@ -127,6 +172,42 @@ export class ProgressBarTraceStepFiltersController {
                                     reader.filters.value = Object.assign({}, reader.filters.value, {
                                         progressBarName: Object.assign({}, filters.progressBarName),
                                     });
+                                }
+                            });
+                            let requestCounter = 0;
+                            this.filters.addListenerAndInvoke(async (filters) => {
+                                if (filters.progressBarStepName !== null) {
+                                    if (
+                                        searchController.value.value === null ||
+                                        searchController.value.value.get("name") !== filters.progressBarStepName.value
+                                    ) {
+                                        const currentRequest = ++requestCounter;
+                                        const response = await fetch(
+                                            apiUrl("/api/1/progress_bars/steps/search"),
+                                            AuthHelper.auth({
+                                                method: "POST",
+                                                headers: { "content-type": "application/json; charset=UTF-8" },
+                                                body: JSON.stringify({
+                                                    filters: { name: filters.progressBarStepName },
+                                                    limit: 1,
+                                                }),
+                                            })
+                                        );
+                                        if (currentRequest !== requestCounter) {
+                                            return;
+                                        }
+                                        if (!response.ok) {
+                                            throw response;
+                                        }
+                                        const json = await response.json();
+                                        if (json.items.length === 0) {
+                                            return;
+                                        }
+                                        if (currentRequest !== requestCounter) {
+                                            return;
+                                        }
+                                        searchController.value.value = parseProgressBarStep(json.items[0]);
+                                    }
                                 }
                             });
                             return searchController.element;
@@ -216,6 +297,11 @@ export class ProgressBarTraceStepFiltersController {
                                     onChange();
                                 }
                             });
+                            this.filters.addListenerAndInvoke((filters) => {
+                                if (filters.progressBarStepPosition !== null) {
+                                    input.valueAsNumber = filters.progressBarStepPosition.value;
+                                }
+                            });
                             return input;
                         })(),
                         "Step Position"
@@ -260,6 +346,11 @@ export class ProgressBarTraceStepFiltersController {
                     }).bind(this);
                     input.addEventListener("change", onChange);
                     input.addEventListener("keyup", onChange);
+                    this.filters.addListenerAndInvoke((filters) => {
+                        if (filters.iterations !== null) {
+                            input.valueAsNumber = filters.iterations.value;
+                        }
+                    });
                     return input;
                 })(),
                 "Iterations"
@@ -289,6 +380,13 @@ export class ProgressBarTraceStepFiltersController {
                     }).bind(this);
                     input.addEventListener("change", onChange);
                     input.addEventListener("keyup", onChange);
+                    this.filters.addListenerAndInvoke((filters) => {
+                        if (filters.finishedAt !== null) {
+                            input.valueAsNumber =
+                                filters.finishedAt.value.getTime() -
+                                filters.finishedAt.value.getTimezoneOffset() * 60 * 1000;
+                        }
+                    });
                     return input;
                 })(),
                 "Finished After"

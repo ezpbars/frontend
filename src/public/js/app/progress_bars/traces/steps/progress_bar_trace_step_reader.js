@@ -3,12 +3,16 @@ import {
     newProgressBarTraceStepFilters,
     progressBarTraceStepFiltersToApi,
 } from "/js/app/progress_bars/traces/steps/progress_bar_trace_step_filters.js";
-import { FINISHED_AT_NEWEST_TO_OLDEST } from "/js/app/progress_bars/traces/steps/progress_bar_trace_step_sort.js";
+import {
+    FINISHED_AT_NEWEST_TO_OLDEST,
+    SORT_OPTIONS,
+} from "/js/app/progress_bars/traces/steps/progress_bar_trace_step_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
 import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js";
+import { PERSISTERS } from "/js/persist_utils.js";
 
 /**
  * loads progress bar trace steps matching the given filters and sorts with the option
@@ -17,19 +21,54 @@ import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js
 export class ProgressBarTraceStepReader {
     /**
      * creates a new reader with the default filter and sort
+     * @param {object} kwargs the keyword arguments
+     * @param {"query" | "notPersisted"} [kwargs.persist = "notPersisted"] if set, where to persist the reader's state
      */
-    constructor() {
+    constructor(kwargs) {
+        kwargs = Object.assign({ persist: "notPersisted" }, kwargs);
+        /**
+         * the persister for the state
+         * @type {import("/js/persist_utils.js").Persister}
+         * @private
+         */
+        this.persister = PERSISTERS[kwargs.persist];
+        const initialState = this.persister.retrieve("progress-bar-trace-step", {
+            pbarName: null,
+            stepName: null,
+            position: null,
+            iterations: null,
+            // in seconds since the unix epoch
+            finishedAfter: null,
+            sort: "0",
+        });
         /**
          * the filters for the list of items
          * @type {Observable.<import("/js/app/progress_bars/traces/steps/progress_bar_trace_step_filters.js").ProgressBarTraceStepFilters>}
          * @readonly
          */
-        this.filters = new Observable(newProgressBarTraceStepFilters({}));
+        this.filters = new Observable(
+            newProgressBarTraceStepFilters({
+                progressBarName:
+                    initialState.pbarName === null ? null : { operator: "eq", value: initialState.pbarName },
+                progressBarStepName:
+                    initialState.stepName === null ? null : { operator: "eq", value: initialState.stepName },
+                progressBarStepPosition:
+                    initialState.position === null ? null : { operator: "eq", value: parseInt(initialState.position) },
+                iterations:
+                    initialState.iterations === null
+                        ? null
+                        : { operator: "eq", value: parseInt(initialState.iterations) },
+                finishedAt:
+                    initialState.finishedAfter === null
+                        ? null
+                        : { operator: "eq", value: new Date(parseFloat(initialState.finishedAfter) * 1000) },
+            })
+        );
         /**
          * the sort for the list of items
          * @type {Observable.<import("/js/app/progress_bars/traces/steps/progress_bar_trace_step_sort.js").ProgressBarTraceStepSort>}
          */
-        this.sort = new Observable(FINISHED_AT_NEWEST_TO_OLDEST);
+        this.sort = new Observable(SORT_OPTIONS[parseInt(initialState.sort)].val);
         /**
          * the maximum number of items to load
          * @type {Observable.<number>}
@@ -63,6 +102,8 @@ export class ProgressBarTraceStepReader {
         this.requestCounter = 0;
         this.filters.addListener(this.reload.bind(this));
         this.sort.addListener(this.reload.bind(this));
+        this.filters.addListener(this.persist.bind(this));
+        this.sort.addListener(this.persist.bind(this));
         this.reload();
     }
     /**
@@ -136,5 +177,26 @@ export class ProgressBarTraceStepReader {
         if (items !== undefined && items !== null) {
             this.items.splice(this.items.get().length, 0, ...items);
         }
+    }
+    /**
+     * persists the current state of the reader
+     * @private
+     */
+    persist() {
+        this.persister.store("progress-bar-trace-step", {
+            pbarName: this.filters.value.progressBarName === null ? null : this.filters.value.progressBarName.value,
+            stepName:
+                this.filters.value.progressBarStepName === null ? null : this.filters.value.progressBarStepName.value,
+            position:
+                this.filters.value.progressBarStepPosition === null
+                    ? null
+                    : this.filters.value.progressBarStepPosition.value.toString(),
+            iterations: this.filters.value.iterations === null ? null : this.filters.value.iterations.value.toString(),
+            finishedAfter:
+                this.filters.value.finishedAt === null
+                    ? null
+                    : (this.filters.value.finishedAt.value.getTime() / 1000).toString(),
+            sort: SORT_OPTIONS.findIndex((option) => option.val === this.sort.value).toString(),
+        });
     }
 }

@@ -3,13 +3,15 @@ import {
     newProgressBarStepFilters,
     progressBarStepFiltersToApi,
 } from "/js/app/progress_bars/steps/progress_bar_step_filters.js";
-import { PBAR_NAME_ALPHABETICAL_AZ } from "/js/app/progress_bars/steps/progress_bar_step_sort.js";
+import { PBAR_NAME_ALPHABETICAL_AZ, SORT_OPTIONS } from "/js/app/progress_bars/steps/progress_bar_step_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
 import { debounce } from "/js/debounce.js";
 import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js";
+import { PERSISTERS } from "/js/persist_utils.js";
+import { filterToTerm, termToFilter } from "/js/search_utils.js";
 
 /**
  * loads progress bar steps matching the given filters and sorts with the option
@@ -22,9 +24,10 @@ export class ProgressBarStepReader {
      * @param {number} [kwargs.debounceMs=1] the number of milliseconds to debounce
      *   reload requests; null to disable debouncing (runs synchronously), 0 to
      *   run as soon as js yields, higher numbers to delay
+     * @param {"query" | "notPersisted"} [kwargs.persist = "notPersisted"] if set, where to persist the reader's state
      */
     constructor(kwargs) {
-        kwargs = Object.assign({ debounceMs: 1 }, kwargs);
+        kwargs = Object.assign({ debounceMs: 1, persist: "notPersisted" }, kwargs);
         /**
          * the number of milliseconds to debounce reload requests; null to disable debouncing
          * @type {number}
@@ -32,17 +35,34 @@ export class ProgressBarStepReader {
          */
         this.debounceMs = kwargs.debounceMs;
         /**
+         * the persister for the state
+         * @type {import("/js/persist_utils.js").Persister}
+         * @private
+         */
+        this.persister = PERSISTERS[kwargs.persist];
+        const initialState = this.persister.retrieve("progress-bar-step", {
+            pbarName: null,
+            stepName: null,
+            sort: "0",
+        });
+        /**
          * the filters for the list of items
          * @type {Observable.<import("/js/app/progress_bars/steps/progress_bar_step_filters.js").ProgressBarStepFilters>}
          * @readonly
          */
-        this.filters = new Observable(newProgressBarStepFilters({}));
+        this.filters = new Observable(
+            newProgressBarStepFilters({
+                progressBarName:
+                    initialState.pbarName === null ? null : { operator: "eq", value: initialState.pbarName },
+                name: termToFilter(initialState.stepName),
+            })
+        );
         /**
          * the sort for the list of items
          * @type {Observable.<import("/js/app/progress_bars/steps/progress_bar_step_sort.js").ProgressBarStepSort>}
          * @readonly
          */
-        this.sort = new Observable(PBAR_NAME_ALPHABETICAL_AZ);
+        this.sort = new Observable(SORT_OPTIONS[parseInt(initialState.sort)].val);
         /**
          * the maximum number of items to load at a time
          * @type {Observable.<number>}
@@ -77,6 +97,8 @@ export class ProgressBarStepReader {
         const reloadAfterDebounce = debounce(this.reload.bind(this), this.debounceMs);
         this.filters.addListener(reloadAfterDebounce);
         this.sort.addListener(reloadAfterDebounce);
+        this.filters.addListener(this.persist.bind(this));
+        this.sort.addListener(this.persist.bind(this));
         reloadAfterDebounce();
     }
     /**
@@ -150,5 +172,16 @@ export class ProgressBarStepReader {
         if (newItems !== null && newItems !== undefined) {
             this.items.splice(newItems.length, 0, ...newItems);
         }
+    }
+    /**
+     * persists the current state of the reader
+     * @private
+     */
+    persist() {
+        this.persister.store("progress-bar-step", {
+            pbarName: this.filters.value.progressBarName === null ? null : this.filters.value.progressBarName.value,
+            stepName: filterToTerm(this.filters.value.name),
+            sort: SORT_OPTIONS.findIndex((option) => option.val === this.sort.value).toString(),
+        });
     }
 }
