@@ -66,6 +66,9 @@
     justify-content: flex-end;
     gap: 5px;
 }
+.resources-controls > * {
+    width: auto;
+}
 /* #endregion */
 /* #endregion */
 /* #endregion */
