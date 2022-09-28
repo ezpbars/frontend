@@ -1,7 +1,7 @@
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { parseUserToken } from "/js/app/user_tokens/user_token.js";
 import { newUserTokenFilters, userTokenFiltersToApi } from "/js/app/user_tokens/user_token_filters.js";
-import { NAME_ALPHABETICAL_AZ, SORT_OPTIONS } from "/js/app/user_tokens/user_token_sort.js";
+import { SORT_OPTIONS } from "/js/app/user_tokens/user_token_sort.js";
 import { AuthHelper } from "/js/auth_helper.js";
 import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";

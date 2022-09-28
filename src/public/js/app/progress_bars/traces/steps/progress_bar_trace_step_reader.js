@@ -3,10 +3,7 @@ import {
     newProgressBarTraceStepFilters,
     progressBarTraceStepFiltersToApi,
 } from "/js/app/progress_bars/traces/steps/progress_bar_trace_step_filters.js";
-import {
-    FINISHED_AT_NEWEST_TO_OLDEST,
-    SORT_OPTIONS,
-} from "/js/app/progress_bars/traces/steps/progress_bar_trace_step_sort.js";
+import { SORT_OPTIONS } from "/js/app/progress_bars/traces/steps/progress_bar_trace_step_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
 import { apiUrl } from "/js/fetch_helper.js";

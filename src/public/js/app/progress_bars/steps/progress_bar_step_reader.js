@@ -3,7 +3,7 @@ import {
     newProgressBarStepFilters,
     progressBarStepFiltersToApi,
 } from "/js/app/progress_bars/steps/progress_bar_step_filters.js";
-import { PBAR_NAME_ALPHABETICAL_AZ, SORT_OPTIONS } from "/js/app/progress_bars/steps/progress_bar_step_sort.js";
+import { SORT_OPTIONS } from "/js/app/progress_bars/steps/progress_bar_step_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
 import { debounce } from "/js/debounce.js";

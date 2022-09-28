@@ -1,6 +1,6 @@
 import { parseProgressBar } from "/js/app/progress_bars/progress_bar.js";
 import { newProgressBarFilters, progressBarFiltersToApi } from "/js/app/progress_bars/progress_bar_filters.js";
-import { NAME_ALPHABETICAL_AZ, SORT_OPTIONS } from "/js/app/progress_bars/progress_bar_sort.js";
+import { SORT_OPTIONS } from "/js/app/progress_bars/progress_bar_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
 import { apiUrl } from "/js/fetch_helper.js";
