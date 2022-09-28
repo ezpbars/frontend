@@ -19,7 +19,7 @@ export class ProgressBarsController {
          * @type {ProgressBarReader}
          * @readonly
          */
-        this.reader = new ProgressBarReader();
+        this.reader = new ProgressBarReader({ persist: "query" });
         /**
          * the view for the items
          * @type {PageableItems.<ProgressBarView>}

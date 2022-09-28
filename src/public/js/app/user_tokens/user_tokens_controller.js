@@ -23,7 +23,7 @@ export class UserTokensController {
          * @type {UserTokenReader}
          * @readonly
          */
-        this.reader = new UserTokenReader();
+        this.reader = new UserTokenReader({ persist: "query" });
         /**
          * the view for the items
          * @type {PageableItems.<UserTokenView>}

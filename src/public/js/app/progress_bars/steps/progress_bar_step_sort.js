@@ -100,5 +100,5 @@ export const SORT_OPTIONS = [
     { name: "Progress Bar Name A-Z", val: PBAR_NAME_ALPHABETICAL_AZ },
     { name: "Progress Bar Name Z-A", val: PBAR_NAME_ALPHABETICAL_ZA },
     { name: "Position First to Last", val: POSITION_FIRST_TO_LAST },
-    { name: "Position LAst to First", val: POSITION_LAST_TO_FIRST },
+    { name: "Position Last to First", val: POSITION_LAST_TO_FIRST },
 ];

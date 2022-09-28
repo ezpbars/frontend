@@ -1,11 +1,12 @@
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { parseUserToken } from "/js/app/user_tokens/user_token.js";
 import { newUserTokenFilters, userTokenFiltersToApi } from "/js/app/user_tokens/user_token_filters.js";
-import { NAME_ALPHABETICAL_AZ } from "/js/app/user_tokens/user_token_sort.js";
+import { SORT_OPTIONS } from "/js/app/user_tokens/user_token_sort.js";
 import { AuthHelper } from "/js/auth_helper.js";
 import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js";
+import { PERSISTERS } from "/js/persist_utils.js";
 
 /**
  * loads user tokens matching the given filters and sorts with the option to get
@@ -14,8 +15,21 @@ import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js
 export class UserTokenReader {
     /**
      * creates a new reader with the default filter and sorts
+     * @param {object} [kwargs] the keyword arguments
+     * @param {"query" | "notPersisted"} [kwargs.persist = "notPersisted"] if set, where to persist the reader's state
      */
-    constructor() {
+    constructor(kwargs) {
+        kwargs = Object.assign({ persist: "notPersisted" }, kwargs);
+        /**
+         * the persister for the state
+         * @type {import("/js/persist_utils.js").Persister}
+         * @private
+         */
+        this.persister = PERSISTERS[kwargs.persist];
+        const initialState = this.persister.retrieve("user-token", {
+            includeExpired: "0",
+            sort: "0",
+        });
         /**
          * the filters for the list of items
          * @type {Observable.<import("/js/app/user_tokens/user_token_filters.js").UserTokenFilters>}
@@ -23,7 +37,7 @@ export class UserTokenReader {
          */
         this.filters = new Observable(
             newUserTokenFilters({
-                expiresAt: { operator: "gtn", value: new Date() },
+                expiresAt: initialState.includeExpired !== "1" ? { operator: "gtn", value: new Date() } : null,
             })
         );
         /**
@@ -31,7 +45,7 @@ export class UserTokenReader {
          * @type {Observable.<import("/js/app/user_tokens/user_token_sort.js").UserTokenSort>}
          * @readonly
          */
-        this.sort = new Observable(NAME_ALPHABETICAL_AZ);
+        this.sort = new Observable(SORT_OPTIONS[parseInt(initialState.sort)].val);
         /**
          * the maximum number of items to load at a time
          * @type {Observable.<number>}
@@ -65,6 +79,8 @@ export class UserTokenReader {
         this.requestCounter = 0;
         this.filters.addListener(this.reload.bind(this));
         this.sort.addListener(this.reload.bind(this));
+        this.filters.addListener(this.persist.bind(this));
+        this.sort.addListener(this.persist.bind(this));
         this.reload();
     }
     /**
@@ -133,5 +149,15 @@ export class UserTokenReader {
     async loadNext() {
         const id = ++this.requestCounter;
         return await this.load(this.filters.value, this.nextPageSort, this.limit.value, id);
+    }
+    /**
+     * persists the current state of the reader
+     * @private
+     */
+    persist() {
+        this.persister.store("user-token", {
+            includeExpired: this.filters.value.expiresAt ? "0" : "1",
+            sort: SORT_OPTIONS.findIndex((option) => option.val === this.sort.value).toString(),
+        });
     }
 }

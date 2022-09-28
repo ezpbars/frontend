@@ -3,31 +3,50 @@ import {
     newProgressBarTraceFilters,
     progressBarTraceFiltersToApi,
 } from "/js/app/progress_bars/traces/progress_bar_trace_filters.js";
-import { NEWEST_TO_OLDEST } from "/js/app/progress_bars/traces/progress_bar_trace_sort.js";
+import { SORT_OPTIONS } from "/js/app/progress_bars/traces/progress_bar_trace_sort.js";
 import { sortHasAfter } from "/js/app/resources/sort_item.js";
 import { AuthHelper } from "/js/auth_helper.js";
 import { apiUrl } from "/js/fetch_helper.js";
 import { Observable } from "/js/lib/observable.js";
 import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js";
+import { PERSISTERS } from "/js/persist_utils.js";
 
 /**
  * loads progress bar traces matching the given filters and sorts with the option to
  * get the next page; automatically resets if the filters or sorts change
+ * @param {object} kwargs the keyword arguments
+ * @param {"query" | "notPersisted"} [kwargs.persist = "notPersisted"] if set, where to persist the reader's state
  */
 export class ProgressBarTraceReader {
-    constructor() {
+    constructor(kwargs) {
+        kwargs = Object.assign({ persist: "notPersisted" }, kwargs);
+        /**
+         * the persister for the state
+         * @type {import("/js/persist_utils.js").Persister}
+         * @private
+         */
+        this.persister = PERSISTERS[kwargs.persist];
+        const initialState = this.persister.retrieve("progress-bar-trace", {
+            pbarName: null,
+            sort: "0",
+        });
         /**
          * the filters for the list of items
          * @type {Observable.<import("/js/app/progress_bars/traces/progress_bar_trace_filters.js").ProgressBarTraceFilters>}
          * @readonly
          */
-        this.filters = new Observable(newProgressBarTraceFilters({}));
+        this.filters = new Observable(
+            newProgressBarTraceFilters({
+                progressBarName:
+                    initialState.pbarName === null ? null : { operator: "eq", value: initialState.pbarName },
+            })
+        );
         /**
          * the sort for the list of items
          * @type {Observable.<import("/js/app/progress_bars/traces/progress_bar_trace_sort.js").ProgressBarTraceSort>}
          * @readonly
          */
-        this.sort = new Observable(NEWEST_TO_OLDEST);
+        this.sort = new Observable(SORT_OPTIONS[parseInt(initialState.sort)].val);
         /**
          * the maximum number of items to load at a time
          * @type {Observable.<number>}
@@ -61,6 +80,8 @@ export class ProgressBarTraceReader {
         this.requestCounter = 0;
         this.filters.addListener(this.reload.bind(this));
         this.sort.addListener(this.reload.bind(this));
+        this.filters.addListener(this.persist.bind(this));
+        this.sort.addListener(this.persist.bind(this));
         this.reload();
     }
     /**
@@ -133,5 +154,15 @@ export class ProgressBarTraceReader {
         if (newItems !== null && newItems !== undefined) {
             this.items.splice(newItems.length, 0, ...newItems);
         }
+    }
+    /**
+     * persists the current state of the reader
+     * @private
+     */
+    persist() {
+        this.persister.store("progress-bar-trace", {
+            pbarName: this.filters.value.progressBarName === null ? null : this.filters.value.progressBarName.value,
+            sort: SORT_OPTIONS.findIndex((option) => option.val === this.sort.value).toString(),
+        });
     }
 }
