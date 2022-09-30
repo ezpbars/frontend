@@ -146,14 +146,14 @@ export class ProgressBarView {
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<string, "uid">} */
                 const data = this.progressBar;
-                return new ResourceSection(data, "uid", { formatter: (uid) => uid }).element;
+                return new ResourceSection(data, "uid", { label: "UID", formatter: (uid) => uid }).element;
             })()
         );
         this.element.appendChild(
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<string, "name">} */
                 const data = this.progressBar;
-                return new ResourceSection(data, "name", { formatter: (name) => name }).element;
+                return new ResourceSection(data, "name", { label: "Name", formatter: (name) => name }).element;
             })()
         );
         this.element.appendChild(
@@ -161,6 +161,7 @@ export class ProgressBarView {
                 /** @type {ReplicaListener & ListenerOf.<number, "samplingMaxCount">} */
                 const data = this.progressBar;
                 return new ResourceSection(data, "samplingMaxCount", {
+                    label: "Sampling Max Count",
                     edit: {
                         editingNode: (() => {
                             const input = document.createElement("input");
@@ -186,6 +187,7 @@ export class ProgressBarView {
                 /** @type {ReplicaListener & ListenerOf.<number, "samplingMaxAgeSeconds">} */
                 const data = this.progressBar;
                 return new ResourceSection(data, "samplingMaxAgeSeconds", {
+                    label: "Sampling Max Age (seconds)",
                     edit: {
                         editingNode: (() => {
                             const input = document.createElement("input");
@@ -211,6 +213,7 @@ export class ProgressBarView {
                 /** @type {ReplicaListener & ListenerOf.<"systematic" | "simpleRandom", "samplingTechnique">} */
                 const data = this.progressBar;
                 return new ResourceSection(data, "samplingTechnique", {
+                    label: "Sampling Technique",
                     edit: {
                         editingNode: (() => {
                             const select = document.createElement("select");
@@ -248,15 +251,20 @@ export class ProgressBarView {
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<Date, "createdAt">} */
                 const data = this.progressBar;
-                return new ResourceSection(data, "createdAt", { formatter: (createdAt) => createdAt.toLocaleString() })
-                    .element;
+                return new ResourceSection(data, "createdAt", {
+                    label: "Created At",
+                    formatter: (createdAt) => createdAt.toLocaleString(),
+                }).element;
             })()
         );
         this.element.appendChild(
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<number, "version">} */
                 const data = this.progressBar;
-                return new ResourceSection(data, "version", { formatter: (version) => version.toString() }).element;
+                return new ResourceSection(data, "version", {
+                    label: "Version",
+                    formatter: (version) => version.toString(),
+                }).element;
             })()
         );
         this.element.appendChild(this.defaultStepConfigView.element);
