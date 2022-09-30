@@ -82,23 +82,30 @@ export class ProgressBarTraceView {
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<string, "uid">} */
                 const data = this.progressBarTrace;
-                return new ResourceSection(data, "uid", { formatter: (uid) => uid }).element;
+                return new ResourceSection(data, "uid", {
+                    label: "UID",
+                    formatter: (uid) => uid,
+                }).element;
             })()
         );
         this.element.appendChild(
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<string, "progressBarName">} */
                 const data = this.progressBarTrace;
-                return new ResourceSection(data, "progressBarName", { formatter: (progressBarName) => progressBarName })
-                    .element;
+                return new ResourceSection(data, "progressBarName", {
+                    label: "Progress Bar Name",
+                    formatter: (progressBarName) => progressBarName,
+                }).element;
             })()
         );
         this.element.appendChild(
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<Date, "createdAt">} */
                 const data = this.progressBarTrace;
-                return new ResourceSection(data, "createdAt", { formatter: (createdAt) => createdAt.toLocaleString() })
-                    .element;
+                return new ResourceSection(data, "createdAt", {
+                    label: "Created At",
+                    formatter: (createdAt) => createdAt.toLocaleString(),
+                }).element;
             })()
         );
     }

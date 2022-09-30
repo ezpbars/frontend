@@ -146,7 +146,10 @@ export class ProgressBarStepView {
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<string, "uid">} */
                 const data = this.progressBarStep;
-                return new ResourceSection(data, "uid", { formatter: (uid) => uid }).element;
+                return new ResourceSection(data, "uid", {
+                    label: "UID",
+                    formatter: (uid) => uid,
+                }).element;
             })()
         );
         this.element.appendChild(
@@ -155,7 +158,10 @@ export class ProgressBarStepView {
                     (() => {
                         /** @type {ReplicaListener & ListenerOf.<string, "name">} */
                         const data = this.progressBarStep;
-                        return new ResourceSection(data, "name", { formatter: (name) => name }).element;
+                        return new ResourceSection(data, "name", {
+                            label: "Name",
+                            formatter: (name) => name,
+                        }).element;
                     })(),
                     { visible: this.progressBarStep.get("name") !== "default" }
                 );
@@ -171,8 +177,10 @@ export class ProgressBarStepView {
                     (() => {
                         /** @type {ReplicaListener & ListenerOf.<number, "position">} */
                         const data = this.progressBarStep;
-                        return new ResourceSection(data, "position", { formatter: (position) => position.toString() })
-                            .element;
+                        return new ResourceSection(data, "position", {
+                            label: "Position",
+                            formatter: (position) => position.toString(),
+                        }).element;
                     })(),
                     { visible: this.progressBarStep.get("name") !== "default" }
                 );
@@ -188,8 +196,10 @@ export class ProgressBarStepView {
                     (() => {
                         /** @type {ReplicaListener & ListenerOf.<boolean, "iterated">} */
                         const data = this.progressBarStep;
-                        return new ResourceSection(data, "iterated", { formatter: (iterated) => iterated.toString() })
-                            .element;
+                        return new ResourceSection(data, "iterated", {
+                            label: "Iterated",
+                            formatter: (iterated) => iterated.toString(),
+                        }).element;
                     })(),
                     { visible: this.progressBarStep.get("name") !== "default" }
                 );
@@ -206,6 +216,7 @@ export class ProgressBarStepView {
                         /** @type {ReplicaListener & ListenerOf.<"percentile" | "harmonicMean" | "geometricMean" | "arithmeticMean", "oneOffTechnique">} */
                         const data = this.progressBarStep;
                         return new ResourceSection(data, "oneOffTechnique", {
+                            label: "One-Off Technique",
                             edit: {
                                 editingNode: (() => {
                                     const select = document.createElement("select");
@@ -261,6 +272,7 @@ export class ProgressBarStepView {
                         /** @type {ReplicaListener & ListenerOf.<number, "oneOffPercentile">} */
                         const data = this.progressBarStep;
                         return new ResourceSection(data, "oneOffPercentile", {
+                            label: "One-Off Percentile",
                             edit: {
                                 editingNode: (() => {
                                     const input = document.createElement("input");
@@ -307,6 +319,7 @@ export class ProgressBarStepView {
                         /** @type {ReplicaListener & ListenerOf.<"bestFit.linear" | "percentile" | "harmonicMean" | "geometricMean" | "arithmeticMean", "iteratedTechnique">} */
                         const data = this.progressBarStep;
                         return new ResourceSection(data, "iteratedTechnique", {
+                            label: "Iterated Technique",
                             edit: {
                                 editingNode: (() => {
                                     const select = document.createElement("select");
@@ -363,6 +376,7 @@ export class ProgressBarStepView {
                         /** @type {ReplicaListener & ListenerOf.<number, "iteratedPercentile">} */
                         const data = this.progressBarStep;
                         return new ResourceSection(data, "iteratedPercentile", {
+                            label: "Iterated Percentile",
                             edit: {
                                 editingNode: (() => {
                                     const input = document.createElement("input");
@@ -406,8 +420,10 @@ export class ProgressBarStepView {
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<Date, "createdAt">} */
                 const data = this.progressBarStep;
-                return new ResourceSection(data, "createdAt", { formatter: (createdAt) => createdAt.toLocaleString() })
-                    .element;
+                return new ResourceSection(data, "createdAt", {
+                    label: "Created At",
+                    formatter: (createdAt) => createdAt.toLocaleString(),
+                }).element;
             })()
         );
     }

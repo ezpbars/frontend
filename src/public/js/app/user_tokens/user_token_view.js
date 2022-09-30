@@ -101,6 +101,7 @@ export class UserTokenView {
                 /** @type {ReplicaListener & ListenerOf.<string, "token">} */
                 const data = this.userToken;
                 return new ResourceSection(data, "token", {
+                    label: "Token",
                     formatter: (token) => {
                         if (token === null) {
                             return null;
@@ -117,16 +118,20 @@ export class UserTokenView {
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<string, "name">} */
                 const data = this.userToken;
-                return new ResourceSection(data, "name", { edit: { fromString: (s) => s, editing: this.editing } })
-                    .element;
+                return new ResourceSection(data, "name", {
+                    label: "Name",
+                    edit: { fromString: (s) => s, editing: this.editing },
+                }).element;
             })()
         );
         this.element.appendChild(
             (() => {
                 /** @type {ReplicaListener & ListenerOf.<Date, "createdAt">} */
                 const data = this.userToken;
-                return new ResourceSection(data, "createdAt", { formatter: (createdAt) => createdAt.toLocaleString() })
-                    .element;
+                return new ResourceSection(data, "createdAt", {
+                    label: "Created At",
+                    formatter: (createdAt) => createdAt.toLocaleString(),
+                }).element;
             })()
         );
         this.element.appendChild(
@@ -134,6 +139,7 @@ export class UserTokenView {
                 /** @type {ReplicaListener & ListenerOf.<Date, "expiresAt">} */
                 const data = this.userToken;
                 return new ResourceSection(data, "expiresAt", {
+                    label: "Expires At",
                     formatter: (expiresAt) => {
                         if (expiresAt !== null) {
                             return expiresAt.toLocaleString();
