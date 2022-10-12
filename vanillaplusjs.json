@@ -110,10 +110,12 @@
             "AUTH_CLIENT_ID": "env://AUTH_CLIENT_ID"
         },
         "dev": {
-            "API_URL": "http://127.0.0.1:8000"
+            "API_URL": "http://127.0.0.1:8000",
+            "WS_URL": "ws://127.0.0.1:8001"
         },
         "prod": {
-            "API_URL": ""
+            "API_URL": "",
+            "WS_URL": ""
         }
     }
 }

@@ -11,6 +11,12 @@ export const LOGIN_URL = "";
 export const API_URL = "";
 
 /**
+ * the base url to use for websocket requests e.g., ws://example.com
+ * @type {string}
+ */
+export const WS_URL = "";
+
+/**
  * the domain for amazon cognito, e.g. example.com.
  * @type {string}
  */
