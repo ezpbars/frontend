@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[TEMPLATE: ["/app.html"]]-->
+        <link rel="stylesheet" href="/css/app/billing.css" />
+        <title>ezpbars billing</title>
+    </head>
+
+    <body>
+        <div class="content">
+            <div class="container">
+                <h1>billing</h1>
+                <a href="/" class="back-button">back</a>
+                <div id="billing"></div>
+            </div>
+        </div>
+        <script type="module" src="/js/login.js"></script>
+        <script type="module">
+            import { UserUsagesController } from "/js/app/user_usages/user_usages_controller.js";
+            document.getElementById("billing").appendChild(new UserUsagesController().element);
+        </script>
+    </body>
+</html>
