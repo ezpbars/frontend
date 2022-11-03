@@ -32,6 +32,19 @@ export class AuthHelper {
         return JSON.parse(serd);
     }
     /**
+     * retrieves the sub of the id token if logged in, otherwise
+     * returns null
+     * @returns {?string} the sub of the id token
+     */
+    static retrieveSub() {
+        const tokens = AuthHelper.retrieve();
+        if (tokens === null) {
+            return null;
+        }
+        const claims = JSON.parse(atob(tokens.id.split(".")[1]));
+        return claims.sub;
+    }
+    /**
      * adds the appropriate authorization headers to the given fetch arguments
      *
      * example:
