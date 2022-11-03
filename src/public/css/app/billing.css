@@ -47,3 +47,6 @@
     flex-direction: row;
     gap: 4px;
 }
+.user-usages-listing {
+    padding: 16px 0;
+}

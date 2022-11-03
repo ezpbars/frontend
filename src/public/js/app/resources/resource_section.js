@@ -150,7 +150,9 @@ export class ResourceSection {
                                         valueCollapse.visible.value = !editing;
                                     });
                                 }
-                                return valueCollapse.element;
+                                const el = document.createElement("div");
+                                el.appendChild(valueCollapse.element);
+                                return el;
                             })()
                         );
                         if (this.edit !== null) {
