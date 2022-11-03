@@ -17,7 +17,11 @@ export function newUserUsageFilters({ userSub = undefined, periodStartedAt = und
         periodStartedAt: periodStartedAt === undefined ? null : periodStartedAt,
     };
 }
-
+/**
+ * converts the given user usage filters to the format expected by the api
+ * @param {UserUsageFilters} filters the filters to convert
+ * @returns {any} the api representation
+ */
 export function userUsageFiltersToApi(filters) {
     return {
         user_sub: filters.userSub,

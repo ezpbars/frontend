@@ -49,7 +49,7 @@ export class UserUsageView {
         );
         this.element.appendChild(
             (() => {
-                /** @type {ReplicaListener & ListenerOf.<number>} */
+                /** @type {ReplicaListener & ListenerOf.<number, "traces">} */
                 const data = this.userUsage;
                 const section = new ResourceSection(data, "traces", {
                     label: "Traces",
@@ -60,7 +60,7 @@ export class UserUsageView {
         );
         this.element.appendChild(
             (() => {
-                /** @type {ReplicaListener & ListenerOf.<number>} */
+                /** @type {ReplicaListener & ListenerOf.<number, "cost">} */
                 const data = this.userUsage;
                 const section = new ResourceSection(data, "cost", {
                     label: "Cost",
@@ -71,7 +71,7 @@ export class UserUsageView {
         );
         this.element.appendChild(
             (() => {
-                /** @type {ReplicaListener & ListenerOf.<string>} */
+                /** @type {ReplicaListener & ListenerOf.<string, "hostedInvoiceUrl">} */
                 const data = this.userUsage;
                 const section = new ResourceSection(data, "hostedInvoiceUrl", {
                     label: "Invoice",

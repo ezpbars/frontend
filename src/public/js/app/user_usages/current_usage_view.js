@@ -213,6 +213,9 @@ class CurrentUsageRow {
     }
 }
 
+/**
+ * shows a user's usage for the current billing period
+ */
 export class CurrentUsageView {
     /**
      *

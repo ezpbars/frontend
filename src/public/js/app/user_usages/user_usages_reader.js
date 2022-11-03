@@ -8,6 +8,10 @@ import { Observable } from "/js/lib/observable.js";
 import { ArrayListenerOf, newArrayListenerOf } from "/js/lib/replica_listener.js";
 import { PERSISTERS } from "/js/persist_utils.js";
 
+/**
+ * loads user usages matching the given filters and sorts with the option to get
+ * the next page; automatically resets if the filters or sorts change
+ */
 export class UserUsagesReader {
     /**
      * creates a new reader with the default filter and sorts

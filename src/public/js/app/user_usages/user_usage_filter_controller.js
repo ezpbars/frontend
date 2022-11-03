@@ -2,6 +2,9 @@ import { FormGroup } from "/js/app/resources/form_group.js";
 import { SORT_OPTIONS } from "/js/app/user_usages/user_usage_sort.js";
 import { Observable } from "/js/lib/observable.js";
 
+/**
+ * responsible for showing and allowing the user to edit the user usages filter object
+ */
 export class UserUsageFilterController {
     /**
      *

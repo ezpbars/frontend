@@ -1,3 +1,4 @@
+/* #region current usage */
 .current-usage-view {
     max-width: 776px;
     margin: 0 auto;
@@ -19,16 +20,7 @@
 .current-usage-view-traces-since-period-start {
     /*! PREPROCESSOR: import .text-body-1 FROM /css/typography.css */
 }
-.user-usages-current-usage-row {
-    display: flex;
-    flex-flow: row wrap;
-    padding: 4px 0;
-    border: 1px solid transparent;
-    /*! PREPROCESSOR: import .text-body-2 FROM /css/typography.css */
-}
-.current-usage-view-total {
-    /*! PREPROCESSOR: import .text-label-1 FROM /css/typography.css */
-}
+/* #region current usage row */
 .user-usages-current-usage-row:hover {
     border: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -47,6 +39,18 @@
     flex-direction: row;
     gap: 4px;
 }
+.user-usages-current-usage-row {
+    display: flex;
+    flex-flow: row wrap;
+    padding: 4px 0;
+    border: 1px solid transparent;
+    /*! PREPROCESSOR: import .text-body-2 FROM /css/typography.css */
+}
+/* #endregion */
+.current-usage-view-total {
+    /*! PREPROCESSOR: import .text-label-1 FROM /css/typography.css */
+}
+/* #endregion */
 .user-usages-listing {
     padding: 16px 0;
 }

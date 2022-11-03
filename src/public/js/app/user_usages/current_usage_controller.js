@@ -15,7 +15,17 @@ export class CurrentUsageController {
          * @type {Element}
          */
         this.element = document.createElement("div");
+        /**
+         * the current usage to show
+         * @type {import("/js/app/user_usages/current_usage.js").CurrentUsage}
+         * @readonly
+         */
         this.currentUsage = newCurrentUsage();
+        /**
+         * the view of the current usage
+         * @type {CurrentUsageView}
+         * @readonly
+         */
         this.view = new CurrentUsageView(this.currentUsage);
         this.render();
         this.reload();

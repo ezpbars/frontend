@@ -7,7 +7,7 @@ import { implementReplicaListener, ListenerOf, ReplicaListener } from "/js/lib/r
 
 /**
  * parses the user usage from the api
- * @param {object} kwargs the user suage from the api
+ * @param {object} kwargs the user usage from the api
  * @param {string} kwargs.user_sub the user sub
  * @param {string} kwargs.uid the uid of the usage record
  * @param {string} kwargs.hosted_invoice_url the url for the hosted invoice page on stripe
