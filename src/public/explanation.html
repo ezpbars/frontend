@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[TEMPLATE: ["/app.html"]]-->
+        <link rel="stylesheet" href="/css/pub/header_and_navbar.css" />
+        <link rel="stylesheet" href="/css/lib/highlight.css" />
+        <title>ezpbars explanation</title>
+    </head>
+
+    <body>
+        <div id="explanation"></div>
+        <script type="module" src="/js/login.js"></script>
+        <script type="module">
+            import { ExplanationController } from "/js/pub/explanation/explanation_controller.js";
+            document.getElementById("explanation").appendChild(new ExplanationController("/explanation.html").element);
+        </script>
+    </body>
+</html>

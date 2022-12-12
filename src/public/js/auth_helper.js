@@ -45,6 +45,27 @@ export class AuthHelper {
         return claims.sub;
     }
     /**
+     * retrieves the name of the id token if logged in, otherwise
+     * returns null
+     * @returns {?string} the name of the id token
+     */
+    static retrieveName() {
+        const tokens = AuthHelper.retrieve();
+        if (tokens === null) {
+            return null;
+        }
+        const claims = JSON.parse(atob(tokens.id.split(".")[1]));
+        const givenName = claims.given_name;
+        if (givenName !== "" && givenName !== undefined && givenName !== null) {
+            return givenName;
+        }
+        let name = claims.name;
+        if (name !== "" && name !== undefined && name !== null) {
+            name = name.split(" ")[0];
+            return name;
+        }
+    }
+    /**
      * adds the appropriate authorization headers to the given fetch arguments
      *
      * example:

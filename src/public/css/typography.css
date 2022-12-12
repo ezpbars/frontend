@@ -142,14 +142,14 @@
 @font-face {
     font-family: "OpenSans";
     src: url("/fonts/OpenSans-ExtraBold.ttf");
-    font-weight: bolder;
+    font-weight: 800;
     font-style: normal;
 }
 
 @font-face {
     font-family: "OpenSans";
     src: url("/fonts/OpenSans-ExtraBoldItalic.ttf");
-    font-weight: bolder;
+    font-weight: 800;
     font-style: italic;
 }
 
@@ -208,6 +208,13 @@
     font-weight: 600;
     font-style: italic;
 }
+
+@font-face {
+    font-family: "Monocraft";
+    src: url("/fonts/Monocraft.otf");
+    font-weight: 400;
+    font-style: normal;
+}
 /* #endregion */
 /* #region style-kit */
 .text-body-1 {
@@ -224,5 +231,31 @@
     font-family: "OpenSans";
     font-weight: 600;
     font-size: 16px;
+}
+.landing-regular {
+    font-family: "OpenSans";
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.95em;
+    letter-spacing: 0.075em;
+}
+.landing-lower {
+    font-family: "OpenSans";
+    font-weight: 800;
+    font-size: 0.95em;
+    letter-spacing: 0.075em;
+}
+.landing-bold {
+    font-family: "OpenSans";
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 1.5em;
+    letter-spacing: 0.04em;
+}
+.minecraft {
+    font-family: "Monocraft";
+    font-weight: 400;
+    font-size: 14px;
+    font-display: swap;
 }
 /* #endregion */

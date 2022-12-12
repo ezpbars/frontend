@@ -1,0 +1,10 @@
+{
+    "header": {
+        "path": "/img/header-background.jpg",
+        "width": 432,
+        "height": 270,
+        "crop_style": "cover",
+        "crop_arguments": {},
+        "lazy": false
+    }
+}

@@ -101,7 +101,24 @@
         "resolution_step": "0.5"
     },
     "auto_generate_images_js_placeholders": true,
-    "external_files": {},
+    "external_files": {
+        "src/public/js/lib/highlight-core.js": {
+            "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/es/core.min.js",
+            "integrity": "sha512-s0myw9LZumI3S1u4hFTuFjE4GJ/MaBFoAXwrhyWGcAEgHEC4ikOHue2+sBoZP22tbHFIh6A6xtffMTD+9xYC9w=="
+        },
+        "src/public/js/lib/highlight-javascript.js": {
+            "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/es/languages/javascript.min.js",
+            "integrity": "sha512-GsemOhrZ7jrSeM6K16SZF+NqzmfDty4wCd3xJccrXQ0KKrzsaUteQejOmCHyxOTbBfwspT4EJcFrbz7pAR+63Q=="
+        },
+        "src/public/js/lib/highlight-python.js": {
+            "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/es/languages/python.min.js",
+            "integrity": "sha512-qN42uZLS7lBHOqakFfdDoC0mkOdWH2Gu0gBIw6byDaIMfY6FCMpG7puvM7GYKlqy28H+YzlUEL9mCTimzjSIeg=="
+        },
+        "src/public/css/lib/highlight.css": {
+            "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css",
+            "integrity": "sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw=="
+        }
+    },
     "js_constants": {
         "relpath": "src/public/js/constants.js",
         "shared": {
@@ -110,7 +127,7 @@
             "AUTH_CLIENT_ID": "env://AUTH_CLIENT_ID"
         },
         "dev": {
-            "API_URL": "http://127.0.0.1:8000"
+            "API_URL": "http://192.168.1.30:8000"
         },
         "prod": {
             "API_URL": ""

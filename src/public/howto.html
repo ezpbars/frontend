@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[TEMPLATE: ["/app.html"]]-->
+        <link rel="stylesheet" href="/css/pub/howto.css" />
+        <link rel="stylesheet" href="/css/pub/header_and_navbar.css" />
+        <link rel="stylesheet" href="/css/lib/highlight.css" />
+        <title>ezpbars how-to</title>
+    </head>
+
+    <body>
+        <div id="howto"></div>
+        <script type="module" src="/js/login.js"></script>
+        <script type="module">
+            import { HowtoController } from "/js/pub/howto/howto_controller.js";
+            document.getElementById("howto").appendChild(new HowtoController("/howto.html").element);
+        </script>
+    </body>
+</html>

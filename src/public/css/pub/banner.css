@@ -1,0 +1,78 @@
+.banner-controller {
+    margin: 0 auto;
+    text-align: center;
+    padding: 7em 0 6em 0;
+    max-width: 940px;
+}
+@media screen and (max-width: 991px) {
+    .banner-controller {
+        padding: 8em 0 4em 0;
+    }
+}
+@media screen and (max-width: 736px) {
+    .banner-controller {
+        padding: 40px 20px 40px 20px;
+    }
+}
+
+/* #region subheader */
+.subheader::before {
+    display: block;
+    content: "";
+    border-top: solid 1px;
+    border-color: rgba(255, 255, 255, 0.25);
+    margin: 10px 0 1.25em 0;
+}
+.subheader::after {
+    display: block;
+    content: "";
+    border-bottom: solid 1px;
+    border-color: rgba(255, 255, 255, 0.25);
+    margin: 1.25em 0 10px 0;
+}
+
+.subheader {
+    margin: 0 0 1em 0;
+}
+/* #endregion */
+/* #region subtitle */
+
+strong {
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+    font-size: 2.35em;
+}
+
+.subtitle {
+    /*! PREPROCESSOR: import .landing-regular FROM /css/typography.css */
+    font-size: 2.2em;
+    line-height: 1.3em;
+    margin-bottom: 1em;
+    text-shadow: rgba(1, 1, 1, 0.15) 0 0 3px;
+}
+/* #endregion */
+/* #region get started */
+.get-started {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 2em;
+    margin: 2em 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.cta {
+    /*! PREPROCESSOR: import .landing-regular FROM /css/typography.css */
+    font-size: 1.25em;
+}
+
+.get-started-button {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+    border-radius: 1em;
+    box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 45%), inset 0px 2px 1px 0px rgb(255 255 255 / 15%);
+    padding: 0.75em 2em;
+    background: rgb(0, 145, 255);
+}
+/* #endregion */

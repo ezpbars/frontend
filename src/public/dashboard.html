@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[TEMPLATE: ["/app.html"]]-->
+        <link rel="stylesheet" href="/css/pub/dashboard.css" />
+        <link rel="stylesheet" href="/css/pub/header_and_navbar.css" />
+        <link rel="stylesheet" href="/css/lib/highlight.css" />
+        <title>ezpbars dashboard</title>
+    </head>
+
+    <body>
+        <div id="dashboard"></div>
+        <script type="module" src="/js/login.js"></script>
+        <script type="module">
+            import { DashboardController } from "/js/pub/dashboard/dashboard_controller.js";
+            document.getElementById("dashboard").appendChild(new DashboardController("/dashboard.html").element);
+        </script>
+    </body>
+</html>

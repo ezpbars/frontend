@@ -25,12 +25,6 @@ html {
     overflow-y: scroll;
 }
 
-body {
-    background: #1f1f1f;
-    background-color: #1f1f1f;
-    background-image: none !important;
-}
-
 button,
 input,
 select,

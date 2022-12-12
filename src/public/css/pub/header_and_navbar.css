@@ -1,0 +1,196 @@
+/* #region navbar */
+.navbar {
+    width: 100%;
+}
+.navbar-controller {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.nav-options {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.navbar-option {
+    list-style: none;
+    white-space: nowrap;
+}
+.navbar-option-link {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    padding: 0.5em 0.8em 0.5em 0.8em;
+    /*! PREPROCESSOR: import .landing-regular FROM /css/typography.css */
+    border-radius: 8px;
+}
+.navbar-option-link:visited {
+    color: #fff;
+}
+.navbar-option .active {
+    background: rgba(0, 0, 0, 0.1);
+}
+.navbar-option button {
+    display: block;
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+}
+/* #endregion */
+/* #region header */
+.header-controller {
+    position: relative;
+    width: 100%;
+    padding: 2em 0;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+}
+
+.header {
+    position: relative;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.75em;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+.header-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.header-inner {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    border-radius: 8px;
+    padding: 2em;
+    box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 45%), inset 0px 2px 1px 0px rgb(255 255 255 / 15%);
+    background: linear-gradient(to bottom, rgba(59, 62, 69, 0.9), rgba(85, 89, 99, 0.9));
+}
+.header-title {
+    display: flex;
+    flex-direction: row;
+}
+.header-title a {
+    color: #fff;
+    text-decoration: none;
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+}
+.header-title-docs {
+    /*! PREPROCESSOR: import .landing-regular FROM /css/typography.css */
+    color: #fff;
+    margin-left: 0.5em;
+    margin-top: 9px;
+}
+@media screen and (min-width: 992px) {
+    .title-bar {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .header {
+        display: none;
+    }
+}
+
+/* #endregion */
+/* #region titlebar */
+@media screen and (min-width: 992px) {
+    .titlebar-controller {
+        display: none;
+    }
+}
+@media screen and (max-width: 991px) {
+    .titlebar-controller {
+        background-color: rgba(59, 62, 69, 0.9);
+        position: fixed;
+        box-shadow: inset 0px 0px 0px 1px rgb(0 0 0 / 50%), inset 0px 0px 0px 2px rgb(255 255 255 / 8%),
+            0px 1px 6px 0px rgb(0 0 0 / 35%);
+        height: 44px;
+        width: 100%;
+        text-shadow: -1px -1px 0 black;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        top: 0;
+        z-index: 100;
+    }
+    .titlebar-controller .icon-btn-menu-large {
+        position: absolute;
+        height: 44px;
+        width: 60px;
+    }
+    .titlebar-controller .icon-btn-menu-large .icon-btn--icon {
+        background-image: url("/img/icons/menu/disabled.svg");
+    }
+    .titlebar-controller .icon-btn-menu-large:hover .icon-btn--icon {
+        background-image: url("/img/icons/menu/disabled.svg");
+    }
+    .titlebar-title {
+        /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+        display: block;
+        margin: 0 auto;
+        font-weight: 800;
+        font-size: 1em;
+        color: #fff;
+        text-align: center;
+        line-height: 44px;
+        letter-spacing: 0.04em;
+    }
+    .titlebar-title-docs {
+        /*! PREPROCESSOR: import .landing-lower FROM /css/typography.css */
+        font-variant: small-caps;
+        text-transform: none;
+    }
+    .nav-options {
+        display: block;
+    }
+    .navbar-option {
+        padding: 5px 0;
+    }
+    .titlebar-menu {
+        background: rgba(50, 50, 50, 0.95);
+    }
+}
+
+/* #endregion */
+/* #region footer */
+.footer-controller {
+    background-color: #2b2d31;
+    color: #fff;
+    padding: 7em 0;
+    background: linear-gradient(to bottom, #1f2022, #2b2d31 50%);
+}
+.footer-column-content {
+    align-items: flex-start;
+    gap: 0;
+    padding: 0;
+}
+.footer-column-content-item {
+    width: 100%;
+}
+.footer-column-content-item::after {
+    display: block;
+    content: "";
+    border-bottom: solid 1px;
+    border-color: rgba(255, 255, 255, 0.25);
+    margin: 10px 0 10px 0;
+}
+.footer-column-content-item-link {
+    text-decoration: none;
+    color: #a4a7ac;
+    /*! PREPROCESSOR: import .text-body-1 FROM /css/typography.css */
+}
+.footer-column-content-item-link:visited {
+    color: #a4a7ac;
+}
+.footer-column-header {
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+    margin-bottom: 2em;
+}
+/* #endregion */

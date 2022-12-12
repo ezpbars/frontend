@@ -1,0 +1,29 @@
+{
+    "subcontent1": {
+        "path": "/img/upset-computer-person.jpg",
+        "width": 400,
+        "height": 350,
+        "crop_style": "cover",
+        "crop_arguments": {},
+        "lazy": false
+
+    },
+    "subcontent2": {
+        "path": "/img/zero-calc.jpg",
+        "width": 400,
+        "height": 350,
+        "crop_style": "cover",
+        "crop_arguments": {},
+        "lazy": false
+
+    },
+    "subcontent3": {
+        "path": "/img/cancel.jpg",
+        "width": 400,
+        "height": 350,
+        "crop_style": "cover",
+        "crop_arguments": {},
+        "lazy": false
+
+    }
+}

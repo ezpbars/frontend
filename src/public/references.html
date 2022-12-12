@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[TEMPLATE: ["/app.html"]]-->
+        <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@4/swagger-ui.css" />
+        <link type="text/css" rel="stylesheet" href="/css/lib/SwaggerDark.css" />
+        <link rel="stylesheet" href="/css/pub/header_and_navbar.css" />
+        <link rel="stylesheet" href="/css/lib/highlight.css" />
+        <title>ezpbars references</title>
+    </head>
+
+    <body>
+        <div id="references"></div>
+        <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@4/swagger-ui-bundle.js"></script>
+        <!-- `SwaggerUIBundle` is now available on the page -->
+        <script type="module" src="/js/login.js"></script>
+        <script type="module">
+            import { ReferencesController } from "/js/pub/references/references_controller.js";
+            document.getElementById("references").appendChild(new ReferencesController("/references.html").element);
+        </script>
+    </body>
+</html>

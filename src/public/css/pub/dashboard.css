@@ -1,0 +1,177 @@
+.wrapper {
+    padding: 4.5em 0;
+}
+@media screen and (max-width: 736px) {
+    .wrapper {
+        padding: 3em 20px;
+    }
+}
+.elevation-medium {
+    background: rgba(246, 251, 255, 0.7);
+}
+.title {
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+    text-align: center;
+    padding: 0 2em;
+}
+.title::after {
+    display: block;
+    content: "";
+    border-top: solid 1px;
+    border-color: rgba(55, 55, 55, 0.25);
+    margin: 10px 0 1.25em 0;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1em;
+    list-style: none;
+}
+.dashboard-content {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 6em;
+}
+.current-usage-view {
+    margin: 2em auto;
+    max-width: 500px;
+}
+/* #region navbar */
+
+.admin-navbar-header {
+    padding: 1em 0;
+    text-align: right;
+    padding-right: 1em;
+    /*! PREPROCESSOR: import .landing-regular FROM /css/typography.css */
+}
+.admin-navbar-controller {
+    /*! PREPROCESSOR: import .landing-lower FROM /css/typography.css */
+    padding: 4em 0 4em 1em;
+    max-width: 400px;
+    width: 100%;
+    border: 1px solid #f3f2f5;
+    background-color: #f8f9fb;
+}
+.admin-navbar-options {
+    margin-left: 150px;
+}
+.admin-navbar-option {
+    text-align: right;
+    padding: 0.25em 2em 0.25em 0;
+    width: 100%;
+    margin-right: 0.5em;
+    border-bottom: 1px solid rgba(115, 115, 115, 0.55);
+}
+.admin-navbar-options button {
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+}
+.with-toggle {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    gap: 10px;
+    padding-right: 0.5em;
+}
+.expanded {
+    border-bottom: none;
+}
+.admin-navbar-options .resources-collapse {
+    margin-right: 0.5em;
+    border-bottom: 1px solid rgba(115, 115, 115, 0.55);
+    padding: 0.25em 2em 0.25em 0;
+    width: 100%;
+}
+.resources-section-inner > div:nth-child(2) {
+    width: 100%;
+}
+.resources-value {
+    width: 100%;
+}
+.expandable-option {
+    text-align: right;
+}
+.admin-navbar-option {
+    max-width: 100%;
+}
+.active {
+    background: #fff;
+    margin: 0 !important;
+}
+.user-tokens-user-token-view-token {
+    overflow-x: auto;
+}
+.user-tokens-user-token-view-token::-webkit-scrollbar {
+    height: 0.25em;
+}
+.user-tokens-user-token-view-token::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+.user-tokens-user-token-view-token::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+    border-radius: 4px;
+}
+
+/* #endregion */
+/* #region mobile */
+@media screen and (min-width: 992px) {
+    .mobile-admin-navbar-controller {
+        display: none;
+    }
+}
+@media screen and (max-width: 991px) {
+    .admin-navbar-controller {
+        display: none;
+    }
+    .mobile-admin-navbar-options {
+        display: flex;
+        flex-direction: column;
+    }
+    .with-more {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        width: 100%;
+        position: relative;
+    }
+    .mobile-admin-navbar-options button {
+        background-color: rgba(0, 0, 0, 0);
+        cursor: pointer;
+    }
+    .mobile-admin-navbar-header {
+        padding: 0.5em 0;
+        width: 100%;
+        text-align: center;
+        /*! PREPROCESSOR: import .landing-regular FROM /css/typography.css */
+    }
+    .open .mobile-admin-navbar-header {
+        border-bottom: 0.5px solid rgba(115, 115, 115, 0.55);
+        margin-bottom: 0.5em;
+    }
+    .mobile-admin-navbar-controller {
+        /*! PREPROCESSOR: import .landing-lower FROM /css/typography.css */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 18px;
+        width: 100%;
+        border: 1px solid #f3f2f5;
+        background-color: #f8f9fb;
+        position: fixed;
+        bottom: 0;
+        padding: 0.5em 20px;
+        box-shadow: 0 -2px 4px rgb(0 0 0 / 10%);
+    }
+    .column {
+        align-items: flex-start;
+    }
+    .mobile-admin-navbar-option .resources-controls-more-menu {
+        bottom: 25px;
+        padding: 0;
+    }
+}
+
+/* #endregion */

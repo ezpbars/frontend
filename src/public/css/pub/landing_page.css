@@ -1,0 +1,179 @@
+/* #region content */
+.wrapper {
+    padding: 4.5em 0 4.5em 0;
+}
+@media screen and (max-width: 736px) {
+    .wrapper {
+        padding: 3em 20px 3em 20px;
+    }
+}
+.wrapper .inner {
+    position: relative;
+    z-index: 2;
+}
+.inner .container {
+    margin: 0 auto;
+    max-width: calc(100% - 100px);
+}
+@media screen and (max-width: 736px) {
+    .inner .container {
+        max-width: 100%;
+    }
+}
+.main-content-controller {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+/* #region section 1 */
+.content-section-1 {
+    background-color: #fff;
+}
+.content-section-1-header {
+    margin-bottom: 4em;
+}
+.content-section-1-title {
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+    font-size: 2.5em;
+    text-align: center;
+}
+.content-section-1-subtitle {
+    /*! PREPROCESSOR: import .landing-regular FROM /css/typography.css */
+    font-size: 1.2em;
+    text-align: center;
+}
+.content-section-1-subcontent {
+    max-width: 400px;
+    overflow: hidden;
+}
+.subcontent-title {
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+}
+.subcontent-description {
+    /*! PREPROCESSOR: import .landing-regular FROM /css/typography.css */
+}
+.content-section-1-footer {
+    /*! PREPROCESSOR: import .text-body-2 FROM /css/typography.css */
+    font-size: 11pt;
+    text-align: center;
+    color: #7b818c;
+}
+/* #endregion */
+/* #region section 2 */
+.content-section-2 {
+    background-color: #f6f9fc;
+}
+.content-section-2-item-title {
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+}
+.content-section-2-item-subtitle {
+    /*! PREPROCESSOR: import .landing-regular FROM /css/typography.css */
+}
+/* #endregion */
+/* #region section 3 */
+.content-section-3 {
+    background-color: #0a2540;
+    color: rgba(255, 255, 255, 0.875);
+}
+.content-section-3-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+/* #region left */
+.content-section-3-left {
+    padding: 5em;
+}
+@media screen and (max-width: 736px) {
+    .content-section-3-left {
+        padding: 3em 0;
+    }
+}
+
+.content-section-3-left-header {
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+    margin: 0 0 1.2em 0;
+    font-size: 2em;
+}
+/* #endregion */
+/* #region right */
+.content-section-3-right {
+    background-color: #112b53;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid #112b53;
+}
+.code-line-numbers {
+    padding: 1em 0 0 6px;
+    color: #55718d;
+    text-align: right;
+}
+.code-content {
+    /*! PREPROCESSOR: import .minecraft FROM /css/typography.css */
+    display: flex;
+    flex-flow: row nowrap;
+    line-height: 1.5em;
+    overflow-x: auto;
+}
+.code-content::-webkit-scrollbar {
+    height: 0.5em;
+}
+
+.code-content::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.code-content::-webkit-scrollbar-thumb {
+    background-color: #0c2241;
+    outline: 1px solid #0e2749;
+    border-radius: 4px;
+}
+.content-section-3-right-box-code-pre {
+    padding: 1em 8px 2em 20px;
+}
+.content-section-3-right-box-header {
+    background-color: #0a2244;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.content-section-3-right-box-header .active {
+    background-color: #112b53;
+}
+.content-section-3-right-box-header button {
+    background-color: #0e2749;
+    padding: 4px 4px 0 4px;
+    color: #8095ff;
+    cursor: pointer;
+}
+.frontend-btn {
+    border-top-left-radius: 8px;
+    border-right: 2px solid #112b53;
+}
+.content-section-3-right-box-header button:hover {
+    background-color: #0a2540;
+    padding: 4px 4px 0 4px;
+}
+/* #endregion */
+/* #endregion */
+/* #region rows and columns */
+.row {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin: 2em 0;
+    gap: 2em;
+    max-width: 100%;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    list-style: none;
+}
+
+/* #endregion */
+/* #endregion */

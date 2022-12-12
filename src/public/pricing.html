@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[TEMPLATE: ["/app.html"]]-->
+        <link rel="stylesheet" href="/css/pub/pricing.css" />
+        <link rel="stylesheet" href="/css/pub/header_and_navbar.css" />
+        <link rel="stylesheet" href="/css/lib/highlight.css" />
+        <title>ezpbars pricing</title>
+    </head>
+
+    <body>
+        <div id="pricing"></div>
+        <script type="module" src="/js/login.js"></script>
+        <script type="module">
+            import { PricingController } from "/js/pub/pricing/pricing_controller.js";
+            document.getElementById("pricing").appendChild(new PricingController("/pricing.html").element);
+        </script>
+    </body>
+</html>

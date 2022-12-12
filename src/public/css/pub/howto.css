@@ -1,0 +1,128 @@
+@media screen and (max-width: 736px) {
+    .wrapper {
+        padding: 3em 20px 3em 20px;
+    }
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: #e3e8ee;
+    gap: 2em;
+    max-width: 100%;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    list-style: none;
+}
+/* #region left */
+.left {
+    padding: 2em;
+    max-width: 50%;
+}
+.title {
+    /*! PREPROCESSOR: import .landing-bold FROM /css/typography.css */
+    font-size: 2.5em;
+    font-weight: 500;
+}
+.description {
+    /*! PREPROCESSOR: import .landing-lower FROM /css/typography.css */
+    padding-top: 1em;
+}
+.description p {
+    font-size: 1em;
+    font-weight: 400;
+    padding-bottom: 0.5em;
+    line-height: 150%;
+}
+.description h2 {
+    font-size: 2em;
+    font-weight: 500;
+    padding-bottom: 0.5em;
+}
+.description h3 {
+    font-size: 1.6em;
+    font-weight: 500;
+    padding-bottom: 0.5em;
+}
+.description h4 {
+    font-size: 1.28em;
+    font-weight: 500;
+    padding-bottom: 0.5em;
+}
+.description h5 {
+    font-size: 1em;
+    font-weight: 800;
+    padding-bottom: 0.5em;
+    line-height: 200%;
+    letter-spacing: 1.5px;
+    text-decoration: underline;
+    text-transform: uppercase;
+}
+.description h6 {
+    font-size: 1em;
+    font-weight: 700;
+    padding-bottom: 0.5em;
+    letter-spacing: 1px;
+    line-height: 200%;
+    text-decoration: underline;
+    text-transform: uppercase;
+}
+/* #endregion */
+/* #region right */
+.code-line-numbers {
+    padding: 1em 0 0 6px;
+    color: #697386;
+    text-align: right;
+}
+.right {
+    background-color: #e3e8ee;
+    color: rgba(255, 255, 255, 0.875);
+    padding: 4em;
+    display: flex;
+    align-items: center;
+}
+.right-box {
+    background-color: #4f566b;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #3c4257;
+}
+.code-content {
+    /*! PREPROCESSOR: import .minecraft FROM /css/typography.css */
+    display: flex;
+    flex-flow: row nowrap;
+    line-height: 1.5em;
+    overflow-x: auto;
+}
+.python-btn {
+    border-top-left-radius: 8px;
+    border-right: 2px solid #3c4257;
+}
+.box-code-pre {
+    padding: 1em 8px 2em 20px;
+}
+.box-header {
+    background-color: #3c4257;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.box-header .active {
+    background-color: #4f566b;
+}
+.box-header button {
+    background-color: #3c4257;
+    padding: 4px 4px 0 4px;
+    color: #9aacb9;
+    cursor: pointer;
+}
+.box-header button:hover {
+    background-color: #2e3343;
+    padding: 4px 4px 0 4px;
+}
+/* #endregion */
